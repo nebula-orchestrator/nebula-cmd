@@ -57,11 +57,14 @@ def nebulactl():
 
 
 @nebulactl.command(help="login to nebula")
-@click.option('--username', prompt='what is nebula api-manager basic auth username?', help='nebula api-manager basic auth username')
-@click.option('--password', prompt='what is nebula api-manager basic auth password?', help='nebula api-manager basic auth password')
+@click.option('--username', prompt='what is nebula api-manager basic auth username?', help='nebula api-manager basic '
+                                                                                           'auth username')
+@click.option('--password', prompt='what is nebula api-manager basic auth password?', help='nebula api-manager basic '
+                                                                                           'auth password')
 @click.option('--host', prompt='what is nebula api-manager host?', help='nebula api-manager host.')
 @click.option('--port', prompt='what is nebula api-manager port?', help='nebula api-manager port', default=80)
-@click.option('--protocol', prompt='what is nebula api-manager protocol?', help='nebula api-manager protocol', default="http")
+@click.option('--protocol', prompt='what is nebula api-manager protocol?', help='nebula api-manager protocol',
+              default="http")
 def login(username, password, host, port, protocol):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
@@ -78,7 +81,7 @@ def list():
 @click.option('--app', prompt='what is nebula app name to create?', help='nebula app name to create')
 def create(app):
     connection = NebulaCall()
-    connection.list_apps()
+    connection.create_app(app)
 
 
 @nebulactl.command(help="delete a nebula app")
