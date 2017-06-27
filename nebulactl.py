@@ -18,9 +18,11 @@ class NebulaCall:
             exit(2)
 
     def create_app(self, app, config):
+        # todo - print a real reply
         print self.connection.create_app(app, config).text
 
     def delete_app(self, app):
+        # todo - print a real reply
         print self.connection.delete_app(app).text
 
     def list_apps(self):
@@ -33,21 +35,27 @@ class NebulaCall:
                 print app
 
     def list_app_info(self, app):
+        # todo - print a real reply
         print self.connection.list_app_info(app).text
 
     def stop_app(self, app):
+        # todo - print a real reply
         print self.connection.stop_app(app).text
 
     def start_app(self, app):
+        # todo - print a real reply
         print self.connection.start_app(app).text
         
     def restart_app(self, app):
+        # todo - print a real reply
         print self.connection.restart_app(app).text
 
     def update_app(self, app, config):
+        # todo - print a real reply
         print self.connection.update_app(app, config).text
 
     def roll_app(self, app):
+        # todo - print a real reply
         print self.connection.roll_app(app).text
 
 
@@ -77,6 +85,7 @@ def list():
     connection.list_apps()
 
 
+# todo - add the config variables needed
 @nebulactl.command(help="create a new nebula app")
 @click.option('--app', prompt='what is nebula app name to create?', help='nebula app name to create')
 def create(app):
@@ -119,6 +128,7 @@ def restart(app):
     connection.restart_app(app)
 
 
+# todo - add the config variables needed
 @nebulactl.command(help="update a nebula app")
 @click.option('--app', prompt='what is nebula app name to update?', help='nebula app name to update')
 def update(app):
