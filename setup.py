@@ -1,0 +1,25 @@
+__author__ = 'Naor Livne'
+__author_email__ = 'naorlivne@gmail.com'
+__version__ = '0.8.1'
+
+from setuptools import setup, find_packages
+
+setup(name='NebulaCMD',
+      author=__author__,
+      author_email=__author_email__,
+      version=__version__,
+      description="NebulaCMD is a CLI to manage Nebula container orchestrator,",
+      packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+      scripts=['setup.py'],
+      license="GPLv3",
+      keywords="nebula container orchestrator sdk",
+      url="https://github.com/nebula-orchestrator/nebula-python-cmd",
+      install_requires=['NebulaPythonSDK>=0.8.1'],
+      classifiers=["Development Status :: 4 - Beta",
+                   "Environment :: Other Environment",
+                   "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+                   "Operating System :: OS Independent",
+                   "Intended Audience :: Developers",
+                   "Intended Audience :: System Administrators",
+                   "Topic :: Internet :: WWW/HTTP",
+                   "Topic :: Software Development :: Libraries :: Python Modules"])
