@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 import click, json
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
