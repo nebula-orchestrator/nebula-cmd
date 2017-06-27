@@ -86,7 +86,6 @@ def create(app):
 
 @nebulactl.command(help="delete a nebula app")
 @click.option('--app', prompt='what is nebula app name to delete?', help='nebula app name to delete')
-
 def delete(app):
     connection = NebulaCall()
     connection.delete_app(app)
@@ -97,6 +96,7 @@ def delete(app):
 def info(app):
     connection = NebulaCall()
     connection.list_app_info(app)
+
 
 @nebulactl.command(help="start a nebula app")
 @click.option('--app', prompt='what is nebula app name to start?', help='nebula app name to start')
@@ -123,7 +123,7 @@ def restart(app):
 @click.option('--app', prompt='what is nebula app name to update?', help='nebula app name to update')
 def update(app):
     connection = NebulaCall()
-    connection.list_apps()
+    connection.update_app(app)
 
 
 @nebulactl.command(help="rolling restart a nebula apps")
