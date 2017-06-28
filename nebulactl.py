@@ -56,7 +56,7 @@ class NebulaCall:
     def stop_app(self, app):
         reply = self.connection.stop_app(app)
         if reply.status_code == 202:
-            print "stop command issues to nebula app: " + app
+            print "stopping nebula app: " + app
         else:
             print "error stopping " + app + ", are you sure you logged in with the correct information?"
 
@@ -64,7 +64,7 @@ class NebulaCall:
     def start_app(self, app):
         reply = self.connection.start_app(app)
         if reply.status_code == 202:
-            print "start command issues to nebula app: " + app
+            print "starting nebula app: " + app
         else:
             print "error starting " + app + ", are you sure you logged in with the correct information?"
 
@@ -72,7 +72,7 @@ class NebulaCall:
     def restart_app(self, app):
         reply = self.connection.restart_app(app)
         if reply.status_code == 202:
-            print "restart command issues to nebula app: " + app
+            print "restarting nebula app: " + app
         else:
             print "error restarting " + app + ", are you sure you logged in with the correct information?"
 
@@ -83,7 +83,7 @@ class NebulaCall:
     def roll_app(self, app):
         reply = self.connection.roll_app(app)
         if reply.status_code == 202:
-            print "roll command issues to nebula app: " + app
+            print "rolling nebula app: " + app
         else:
             print "error rolling " + app + ", are you sure you logged in with the correct information?"
 
