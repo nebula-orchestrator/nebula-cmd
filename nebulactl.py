@@ -44,7 +44,6 @@ class NebulaCall:
             print "error retuning list of nebula apps, are you sure you logged in with the correct information?"
 
     def list_app_info(self, app):
-        # todo - print a real reply
         reply = self.connection.list_app_info(app)
         reply_json = reply.json()
         if reply.status_code == 200:
