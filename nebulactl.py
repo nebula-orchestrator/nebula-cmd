@@ -22,41 +22,69 @@ class NebulaCall:
         print self.connection.create_app(app, config).text
 
     def delete_app(self, app):
-        # todo - print a real reply
-        print self.connection.delete_app(app).text
+        reply = self.connection.delete_app(app)
+        if reply.status_code == 202:
+            print "deleting nebula app: " + app
+        elif reply.status_code == 403:
+            print "error deleting " + app + ", app doesn't exist"
+        else:
+            print "error deleting " + app + ", are you sure you logged in with the correct information?"
 
     def list_apps(self):
-        reply = self.connection.list_apps().json()
-        if len(reply["apps"]) == 0:
-            print "no apps in nebula cluster"
+        reply = self.connection.list_apps()
+        if reply.status_code == 200:
+            reply_json = reply.json()
+            if len(reply_json["apps"]) == 0:
+                print "no apps in nebula cluster"
+            else:
+                print "nebula cluster apps:"
+                for app in reply_json["apps"]:
+                    print app
         else:
-            print "nebula cluster apps:"
-            for app in reply["apps"]:
-                print app
+            print "error retuning list of nebula apps, are you sure you logged in with the correct information?"
 
     def list_app_info(self, app):
-        # todo - print a real reply
-        print self.connection.list_app_info(app).text
+        reply = self.connection.list_app_info(app)
+        reply_json = reply.json()
+        if reply.status_code == 200:
+            for key, value in reply_json.items():
+                print str(key) + ": " + str(value)
+        else:
+            print "error listing " + app + " info, are you sure you logged in with the correct information?"
 
     def stop_app(self, app):
-        # todo - print a real reply
-        print self.connection.stop_app(app).text
+        reply = self.connection.stop_app(app)
+        if reply.status_code == 202:
+            print "stop command issues to nebula app: " + app
+        else:
+            print "error stopping " + app + ", are you sure you logged in with the correct information?"
+
 
     def start_app(self, app):
-        # todo - print a real reply
-        print self.connection.start_app(app).text
+        reply = self.connection.start_app(app)
+        if reply.status_code == 202:
+            print "start command issues to nebula app: " + app
+        else:
+            print "error starting " + app + ", are you sure you logged in with the correct information?"
+
         
     def restart_app(self, app):
-        # todo - print a real reply
-        print self.connection.restart_app(app).text
+        reply = self.connection.restart_app(app)
+        if reply.status_code == 202:
+            print "restart command issues to nebula app: " + app
+        else:
+            print "error restarting " + app + ", are you sure you logged in with the correct information?"
 
     def update_app(self, app, config):
         # todo - print a real reply
         print self.connection.update_app(app, config).text
 
     def roll_app(self, app):
-        # todo - print a real reply
-        print self.connection.roll_app(app).text
+        reply = self.connection.roll_app(app)
+        if reply.status_code == 202:
+            print "roll command issues to nebula app: " + app
+        else:
+            print "error rolling " + app + ", are you sure you logged in with the correct information?"
 
 
 @click.group(help="manage a nebula cluster")
