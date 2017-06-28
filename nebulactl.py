@@ -4,6 +4,9 @@ from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
 
+VERSION = "0.8.1"
+
+
 class NebulaCall:
 
     def __init__(self,):
@@ -85,6 +88,7 @@ class NebulaCall:
             print "error rolling " + app + ", are you sure you logged in with the correct information?"
 
 
+@click.version_option(version=VERSION)
 @click.group(help="manage a nebula cluster")
 def nebulactl():
     pass
