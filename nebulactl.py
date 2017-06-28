@@ -60,7 +60,6 @@ class NebulaCall:
         else:
             print "error stopping " + app + ", are you sure you logged in with the correct information?"
 
-
     def start_app(self, app):
         reply = self.connection.start_app(app)
         if reply.status_code == 202:
@@ -68,7 +67,6 @@ class NebulaCall:
         else:
             print "error starting " + app + ", are you sure you logged in with the correct information?"
 
-        
     def restart_app(self, app):
         reply = self.connection.restart_app(app)
         if reply.status_code == 202:
