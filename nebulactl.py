@@ -116,12 +116,26 @@ def list():
     connection.list_apps()
 
 
-# todo - add the config variables needed
+# todo - half cooked, need to get this working but too tired/pissed to think straight right now
 @nebulactl.command(help="create a new nebula app")
-@click.option('--app', '-a', prompt='what is nebula app name to create?', help='nebula app name to create')
-def create(app):
+@click.option('--app', '-a', help='nebula app name to create',  prompt='what is nebula app name to create?')
+@click.option('--starting_ports', '-p', prompt="what are the app starting ports?", default=[],
+              help='starting ports to run in the format of [{"X": "Y"}, Z, ... ] where x=host_port & Y=container_port '
+                   '& Z is shorthand for writing "Z": "Z"')
+@click.option('--containers_per', '-c', prompt="what are the app containers_per value?",
+              help='{cpu:X} or {server:X} where X is the number of containers per cpu\server to have')
+@click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value, defaults to none',
+              prompt="what are the app envvars?")
+@click.option('--image', '-i', help='nebula app docker image', prompt="what is the app docker image?")
+@click.option('--running', '-r', default=True, help='nebula app running/stopped state, defaults to True',
+              prompt="should the app start in the running state?")
+@click.option('--network_mode', '-n', default="bridge", prompt="what is the app network_mode?",
+              help='nebula app network mode (host, bridge, etc...), defaults to bridge')
+def create(app, starting_ports, containers_per, env_vars, image, running, network_mode):
+    config_json = {"starting_ports": list(starting_ports), "containers_per": dict(containers_per),
+                   "env_vars": dict(env_vars), "image": image, "running": running, "network_mode": network_mode}
     connection = NebulaCall()
-    connection.create_app(app)
+    connection.create_app(app, config_json)
 
 
 @nebulactl.command(help="delete a nebula app")
