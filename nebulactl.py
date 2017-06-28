@@ -97,11 +97,11 @@ def nebulactl():
 @nebulactl.command(help="login to nebula")
 @click.option('--username', '-u', prompt='what is nebula api-manager basic auth username?',
               help='nebula api-manager basic auth username')
-@click.option('--password', 'p', prompt='what is nebula api-manager basic auth password?', hide_input=True,
+@click.option('--password', '-p', prompt='what is nebula api-manager basic auth password?', hide_input=True,
               confirmation_prompt=True, help='nebula api-manager basic auth password')
 @click.option('--host', '-h', prompt='what is nebula api-manager host?', help='nebula api-manager host.')
-@click.option('--port', '-p', prompt='what is nebula api-manager port?', help='nebula api-manager port, defaults to 80',
-              default=80)
+@click.option('--port', '-c', prompt='what is nebula api-manager port?', help='nebula api-manager port, defaults to 80',
+              default=80, type=click.IntRange(1, 65535))
 @click.option('--protocol', '-P', prompt='what is nebula api-manager protocol?', default="http",
               help='nebula api-manager protocol, defaults to http')
 def login(username, password, host, port, protocol):
