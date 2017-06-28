@@ -92,14 +92,15 @@ def nebulactl():
 
 
 @nebulactl.command(help="login to nebula")
-@click.option('--username', prompt='what is nebula api-manager basic auth username?',
+@click.option('--username', '-u', prompt='what is nebula api-manager basic auth username?',
               help='nebula api-manager basic auth username')
-@click.option('--password', prompt='what is nebula api-manager basic auth password?', hide_input=True,
+@click.option('--password', 'p', prompt='what is nebula api-manager basic auth password?', hide_input=True,
               confirmation_prompt=True, help='nebula api-manager basic auth password')
-@click.option('--host', prompt='what is nebula api-manager host?', help='nebula api-manager host.')
-@click.option('--port', prompt='what is nebula api-manager port?', help='nebula api-manager port', default=80)
-@click.option('--protocol', prompt='what is nebula api-manager protocol?', help='nebula api-manager protocol',
-              default="http")
+@click.option('--host', '-h', prompt='what is nebula api-manager host?', help='nebula api-manager host.')
+@click.option('--port', '-p', prompt='what is nebula api-manager port?', help='nebula api-manager port, defaults to 80',
+              default=80)
+@click.option('--protocol', '-P', prompt='what is nebula api-manager protocol?', default="http",
+              help='nebula api-manager protocol, defaults to http')
 def login(username, password, host, port, protocol):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
@@ -114,42 +115,42 @@ def list():
 
 # todo - add the config variables needed
 @nebulactl.command(help="create a new nebula app")
-@click.option('--app', prompt='what is nebula app name to create?', help='nebula app name to create')
+@click.option('--app', '-a', prompt='what is nebula app name to create?', help='nebula app name to create')
 def create(app):
     connection = NebulaCall()
     connection.create_app(app)
 
 
 @nebulactl.command(help="delete a nebula app")
-@click.option('--app', prompt='what is nebula app name to delete?', help='nebula app name to delete')
+@click.option('--app', '-a', prompt='what is nebula app name to delete?', help='nebula app name to delete')
 def delete(app):
     connection = NebulaCall()
     connection.delete_app(app)
 
 
 @nebulactl.command(help="list info of a nebula app")
-@click.option('--app', prompt='what is nebula app name to get info of?', help='nebula app name to get info of')
+@click.option('--app', '-a', prompt='what is nebula app name to get info of?', help='nebula app name to get info of')
 def info(app):
     connection = NebulaCall()
     connection.list_app_info(app)
 
 
 @nebulactl.command(help="start a nebula app")
-@click.option('--app', prompt='what is nebula app name to start?', help='nebula app name to start')
+@click.option('--app', '-a', prompt='what is nebula app name to start?', help='nebula app name to start')
 def start(app):
     connection = NebulaCall()
     connection.start_app(app)
 
 
 @nebulactl.command(help="stop a nebula app")
-@click.option('--app', prompt='what is nebula app name to stop?', help='nebula app name to stop')
+@click.option('--app', '-a', prompt='what is nebula app name to stop?', help='nebula app name to stop')
 def stop(app):
     connection = NebulaCall()
     connection.stop_app(app)
 
 
 @nebulactl.command(help="restart a nebula app")
-@click.option('--app', prompt='what is nebula app name to restart?', help='nebula app name to restart')
+@click.option('--app', '-a', prompt='what is nebula app name to restart?', help='nebula app name to restart')
 def restart(app):
     connection = NebulaCall()
     connection.restart_app(app)
@@ -157,14 +158,15 @@ def restart(app):
 
 # todo - add the config variables needed
 @nebulactl.command(help="update a nebula app")
-@click.option('--app', prompt='what is nebula app name to update?', help='nebula app name to update')
+@click.option('--app', '-a', prompt='what is nebula app name to update?', help='nebula app name to update')
 def update(app):
     connection = NebulaCall()
     connection.update_app(app)
 
 
 @nebulactl.command(help="rolling restart a nebula apps")
-@click.option('--app', prompt='what is nebula app name to rolling restart?', help='nebula app name to rolling restart')
+@click.option('--app', '-a', prompt='what is nebula app name to rolling restart?',
+              help='nebula app name to rolling restart')
 def roll(app):
     connection = NebulaCall()
     connection.roll_app(app)
