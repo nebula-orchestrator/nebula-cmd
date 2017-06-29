@@ -84,8 +84,13 @@ class NebulaCall:
             print "error restarting " + app + ", are you sure you logged in with the correct information?"
 
     def update_app(self, app, config):
-        # todo - print a real reply
-        print self.connection.update_app(app, config).text
+        reply = self.connection.update_app(app, config)
+        if reply.status_code == 202:
+            print "updating nebula app: " + app
+        elif reply.status_code == 400:
+            print "error updating " + app + ", missing\incorrect parameters"
+        else:
+            print "error updating " + app + ", are you sure you logged in with the correct information?"
 
     def roll_app(self, app):
         reply = self.connection.roll_app(app)
@@ -148,7 +153,7 @@ def create(app, starting_ports, containers_per, env_vars, image, running, networ
     env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
     config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
                               "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
-                              "network_mode": str(network_mode), "docker_ulimits": []}
+                              "network_mode": str(network_mode)}
     connection = NebulaCall()
     connection.create_app(app, config_json)
 
@@ -188,12 +193,41 @@ def restart(app):
     connection.restart_app(app)
 
 
-# todo - add the config variables needed
 @nebulactl.command(help="update a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to update?', help='nebula app name to update')
-def update(app):
+@click.option('--starting_ports', '-p',
+              help='starting ports to run in the format of X:Y,A:B where X,A=host_port & Y,B=container_port')
+@click.option('--containers_per', '-c',
+              help='cpu:X or server:X where X is the number of containers per cpu\server to have')
+@click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value,key1:value1...')
+@click.option('--image', '-i', help='nebula app docker image')
+@click.option('--running', '-r', help='nebula app running/stopped state')
+@click.option('--network_mode', '-n', help='nebula app network mode (host, bridge, etc...)')
+def update(app, starting_ports, containers_per, env_vars, image, running, network_mode):
+    config_json = {}
+    if starting_ports is not None:
+        starting_ports = starting_ports.split(",")
+        ports_list = []
+        for ports in starting_ports:
+            ports = ports.split(":")
+            ports_dict = {str(ports[0]): str(ports[1])}
+            ports_list.append(ports_dict)
+        config_json["starting_ports"] = ports_list
+    if containers_per is not None:
+        containers_per = str(containers_per).split(":")
+        containers_per_dict = {containers_per[0]: int(containers_per[1])}
+        config_json["containers_per"] = containers_per_dict
+    if env_vars is not None:
+        env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
+        config_json["env_vars"] = dict(env_vars)
+    if image is not None:
+        config_json["docker_image"] = str(image)
+    if running is not None:
+        config_json["running"] = bool(running)
+    if network_mode is not None:
+        config_json["network_mode"] = str(network_mode)
     connection = NebulaCall()
-    connection.update_app(app)
+    connection.update_app(app, config_json)
 
 
 @nebulactl.command(help="rolling restart a nebula apps")
