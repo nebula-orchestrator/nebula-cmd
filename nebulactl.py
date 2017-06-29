@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-import click, json
+import click, json, ast
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
@@ -21,8 +21,15 @@ class NebulaCall:
             exit(2)
 
     def create_app(self, app, config):
-        # todo - print a real reply
-        print self.connection.create_app(app, config).text
+        reply = self.connection.create_app(app, config)
+        if reply.status_code == 202:
+            print "creating nebula app: " + app
+        elif reply.status_code == 400:
+            print "error creating " + app + ", missing\incorrect parameters"
+        elif reply.status_code == 403:
+            print "error creating " + app + ", app already exist"
+        else:
+            print "error creating " + app + ", are you sure you logged in with the correct information?"
 
     def delete_app(self, app):
         reply = self.connection.delete_app(app)
@@ -116,15 +123,13 @@ def list():
     connection.list_apps()
 
 
-# todo - half cooked, need to get this working but too tired/pissed to think straight right now
 @nebulactl.command(help="create a new nebula app")
 @click.option('--app', '-a', help='nebula app name to create',  prompt='what is nebula app name to create?')
 @click.option('--starting_ports', '-p', prompt="what are the app starting ports?", default=[],
-              help='starting ports to run in the format of [{"X": "Y"}, Z, ... ] where x=host_port & Y=container_port '
-                   '& Z is shorthand for writing "Z": "Z"')
+              help='starting ports to run in the format of X:Y,A:B where X,A=host_port & Y,B=container_port')
 @click.option('--containers_per', '-c', prompt="what are the app containers_per value?",
-              help='{cpu:X} or {server:X} where X is the number of containers per cpu\server to have')
-@click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value, defaults to none',
+              help='cpu:X or server:X where X is the number of containers per cpu\server to have')
+@click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value,key1:value1... defaults to none',
               prompt="what are the app envvars?")
 @click.option('--image', '-i', help='nebula app docker image', prompt="what is the app docker image?")
 @click.option('--running', '-r', default=True, help='nebula app running/stopped state, defaults to True',
@@ -132,8 +137,18 @@ def list():
 @click.option('--network_mode', '-n', default="bridge", prompt="what is the app network_mode?",
               help='nebula app network mode (host, bridge, etc...), defaults to bridge')
 def create(app, starting_ports, containers_per, env_vars, image, running, network_mode):
-    config_json = {"starting_ports": list(starting_ports), "containers_per": dict(containers_per),
-                   "env_vars": dict(env_vars), "image": image, "running": running, "network_mode": network_mode}
+    starting_ports = starting_ports.split(",")
+    ports_list = []
+    for ports in starting_ports:
+        ports = ports.split(":")
+        ports_dict = {str(ports[0]):str(ports[1])}
+        ports_list.append(ports_dict)
+    containers_per = str(containers_per).split(":")
+    containers_per_dict = {containers_per[0]: int(containers_per[1])}
+    env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
+    config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
+                              "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
+                              "network_mode": str(network_mode), "docker_ulimits": []}
     connection = NebulaCall()
     connection.create_app(app, config_json)
 
