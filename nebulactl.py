@@ -146,14 +146,14 @@ def create(app, starting_ports, containers_per, env_vars, image, running, networ
     ports_list = []
     for ports in starting_ports:
         ports = ports.split(":")
-        ports_dict = {str(ports[0]):str(ports[1])}
+        ports_dict = {str(ports[0]): str(ports[1])}
         ports_list.append(ports_dict)
     containers_per = str(containers_per).split(":")
     containers_per_dict = {containers_per[0]: int(containers_per[1])}
     env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
     config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
-                              "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
-                              "network_mode": str(network_mode)}
+                   "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
+                   "network_mode": str(network_mode)}
     connection = NebulaCall()
     connection.create_app(app, config_json)
 
