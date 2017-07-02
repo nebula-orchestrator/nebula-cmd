@@ -124,6 +124,7 @@ def login(username, password, host, port, protocol):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
     json.dump({"username": username, "password": password, "host": host, "port": port, "protocol": protocol}, auth_file)
+    auth_file.write('\n')
 
 
 @nebulactl.command(help="list nebula apps")
