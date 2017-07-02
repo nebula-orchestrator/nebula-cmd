@@ -164,6 +164,7 @@ def create(app, starting_ports, containers_per, env_vars, image, running, networ
 
 @nebulactl.command(help="delete a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to delete?', help='nebula app name to delete')
+@click.confirmation_option(help='auto confirm you want to delete the app')
 def delete(app):
     connection = NebulaCall()
     connection.delete_app(app)
