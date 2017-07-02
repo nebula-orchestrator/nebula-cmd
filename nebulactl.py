@@ -7,6 +7,8 @@ from os.path import expanduser
 VERSION = "0.8.1"
 
 
+# i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
+# the communication with the SDK\API & formatting of replies to something a bit more CLI worthy
 class NebulaCall:
 
     def __init__(self,):
@@ -100,6 +102,8 @@ class NebulaCall:
             print "error rolling " + app + ", are you sure you logged in with the correct information?"
 
 
+# the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
+# things, meaning help text, arguments input, arguments prompts & login file interfacing
 @click.version_option(version=VERSION)
 @click.group(help="manage a nebula cluster")
 def nebulactl():
