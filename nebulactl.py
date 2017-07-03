@@ -11,6 +11,7 @@ VERSION = "0.8.1"
 # the communication with the SDK\API & formatting of replies to something a bit more CLI worthy
 class NebulaCall:
 
+    # the init step reads from the authfile, not keeping connection open as it's a CLI
     def __init__(self,):
         try:
             home = expanduser("~")
@@ -133,6 +134,7 @@ def list():
     connection.list_apps()
 
 
+# create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
 @nebulactl.command(help="create a new nebula app")
 @click.option('--app', '-a', help='nebula app name to create',  prompt='what is nebula app name to create?')
 @click.option('--starting_ports', '-p', prompt="what are the app starting ports?", default=[],
@@ -199,6 +201,7 @@ def restart(app):
     connection.restart_app(app)
 
 
+# update can be any combination of params, only one that's 100% required is the --app so it's the only one i'm prompting
 @nebulactl.command(help="update a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to update?', help='nebula app name to update')
 @click.option('--starting_ports', '-p',
