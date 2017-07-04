@@ -20,87 +20,98 @@ class NebulaCall:
             self.connection = Nebula(username=auth_json["username"], password=auth_json["password"],
                                      host=auth_json["host"], port=auth_json["port"], protocol=auth_json["protocol"])
         except:
-            print "error reading ~/nebula.json auth file, try logging in first"
+            click.echo(click.style("error reading ~/nebula.json auth file, try logging in first", fg="red"))
             exit(2)
 
     def create_app(self, app, config):
         reply = self.connection.create_app(app, config)
         if reply.status_code == 202:
-            print "creating nebula app: " + app
+            click.echo(click.style("creating nebula app: " + app, fg="green"))
         elif reply.status_code == 400:
-            print "error creating " + app + ", missing\incorrect parameters"
+            click.echo(click.style("error creating " + app + ", missing\incorrect parameters", fg="red"))
         elif reply.status_code == 403:
-            print "error creating " + app + ", app already exist"
+            click.echo(click.style("error creating " + app + ", app already exist", fg="red"))
         else:
-            print "error creating " + app + ", are you sure you logged in with the correct information?"
+            click.echo(click.style("error creating " + app
+                                   + ", are you sure you logged in with the correct information?", fg="red"))
 
     def delete_app(self, app):
         reply = self.connection.delete_app(app)
         if reply.status_code == 202:
-            print "deleting nebula app: " + app
+            click.echo(click.style("deleting nebula app: " + app, fg="magenta"))
         elif reply.status_code == 403:
-            print "error deleting " + app + ", app doesn't exist"
+            click.echo(click.style("error deleting " + app + ", app doesn't exist", fg="red"))
         else:
-            print "error deleting " + app + ", are you sure you logged in with the correct information?"
+            click.echo(click.style("error deleting " + app
+                                   + ", are you sure you logged in with the correct information?", fg="red"))
 
     def list_apps(self):
         reply = self.connection.list_apps()
         if reply.status_code == 200:
             reply_json = reply.json()
             if len(reply_json["apps"]) == 0:
-                print "no apps in nebula cluster"
+                click.echo("no apps in nebula cluster")
             else:
-                print "nebula cluster apps:"
+                click.echo("nebula cluster apps:")
                 for app in reply_json["apps"]:
-                    print app
+                    click.echo(app)
         else:
-            print "error retuning list of nebula apps, are you sure you logged in with the correct information?"
+            click.echo(
+                click.style(
+                    "error retuning list of nebula apps, are you sure you logged in with the correct information?",
+                    fg="red"))
 
     def list_app_info(self, app):
         reply = self.connection.list_app_info(app)
         reply_json = reply.json()
         if reply.status_code == 200:
             for key, value in reply_json.items():
-                print str(key) + ": " + json.dumps(value)
+                click.echo(str(key) + ": " + json.dumps(value))
         else:
-            print "error listing " + app + " info, are you sure you logged in with the correct information?"
+            click.echo(click.style("error listing " + app
+                                   + " info, are you sure you logged in with the correct information?", fg="red"))
 
     def stop_app(self, app):
         reply = self.connection.stop_app(app)
         if reply.status_code == 202:
-            print "stopping nebula app: " + app
+            click.echo("stopping nebula app: " + app)
         else:
-            print "error stopping " + app + ", are you sure you logged in with the correct information?"
+            click.echo(click.style("error stopping " + app +
+                                   ", are you sure you logged in with the correct information?", fg="red"))
 
     def start_app(self, app):
         reply = self.connection.start_app(app)
         if reply.status_code == 202:
-            print "starting nebula app: " + app
+            click.echo("starting nebula app: " + app)
         else:
-            print "error starting " + app + ", are you sure you logged in with the correct information?"
+            click.echo(click.style("error starting " + app
+                                   + ", are you sure you logged in with the correct information?", fg="red"))
 
     def restart_app(self, app):
         reply = self.connection.restart_app(app)
         if reply.status_code == 202:
-            print "restarting nebula app: " + app
+            click.echo(click.style("restarting nebula app: " + app, fg="yellow"))
         else:
-            print "error restarting " + app + ", are you sure you logged in with the correct information?"
+            click.echo(click.style("error restarting " + app
+                                   + ", are you sure you logged in with the correct information?", fg="red"))
 
     def update_app(self, app, config):
         reply = self.connection.update_app(app, config)
         if reply.status_code == 202:
-            print "updating nebula app: " + app
+            click.echo("updating nebula app: " + app)
         elif reply.status_code == 400:
-            print "error updating " + app + ", missing\incorrect parameters"
+            click.echo(click.style("error updating " + app + ", missing\incorrect parameters", fg="red"))
         else:
-            print "error updating " + app + ", are you sure you logged in with the correct information?"
+            click.echo(click.style("error updating " + app
+                                   + ", are you sure you logged in with the correct information?", fg="red"))
 
     def roll_app(self, app):
         reply = self.connection.roll_app(app)
         if reply.status_code == 202:
-            print "rolling nebula app: " + app
+            click.echo(click.style("rolling nebula app: " + app, fg="yellow"))
         else:
-            print "error rolling " + app + ", are you sure you logged in with the correct information?"
+            click.echo(click.style("error rolling " + app
+                                   + ", are you sure you logged in with the correct information?", fg="red"))
 
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
