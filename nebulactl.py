@@ -33,7 +33,7 @@ class NebulaCall:
             click.echo(click.style("error creating " + app + ", app already exist", fg="red"))
         else:
             click.echo(click.style("error creating " + app
-                                   + ", are you sure you logged in with the correct information?", fg="red"))
+                                   + ", did you logged in? did you sent the right params & app name?", fg="red"))
 
     def delete_app(self, app):
         reply = self.connection.delete_app(app)
@@ -43,7 +43,7 @@ class NebulaCall:
             click.echo(click.style("error deleting " + app + ", app doesn't exist", fg="red"))
         else:
             click.echo(click.style("error deleting " + app
-                                   + ", are you sure you logged in with the correct information?", fg="red"))
+                                   + ", did you logged in? did you sent the right app name?", fg="red"))
 
     def list_apps(self):
         reply = self.connection.list_apps()
@@ -58,7 +58,7 @@ class NebulaCall:
         else:
             click.echo(
                 click.style(
-                    "error retuning list of nebula apps, are you sure you logged in with the correct information?",
+                    "error retuning list of nebula apps, did you logged in?",
                     fg="red"))
 
     def list_app_info(self, app):
@@ -69,7 +69,7 @@ class NebulaCall:
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
             click.echo(click.style("error listing " + app
-                                   + " info, are you sure you logged in with the correct information?", fg="red"))
+                                   + " info, did you logged in? did you sent the right app name?", fg="red"))
 
     def stop_app(self, app):
         reply = self.connection.stop_app(app)
@@ -77,7 +77,7 @@ class NebulaCall:
             click.echo("stopping nebula app: " + app)
         else:
             click.echo(click.style("error stopping " + app +
-                                   ", are you sure you logged in with the correct information?", fg="red"))
+                                   ", did you logged in? did you sent the right app name?", fg="red"))
 
     def start_app(self, app):
         reply = self.connection.start_app(app)
@@ -85,7 +85,7 @@ class NebulaCall:
             click.echo("starting nebula app: " + app)
         else:
             click.echo(click.style("error starting " + app
-                                   + ", are you sure you logged in with the correct information?", fg="red"))
+                                   + ", did you logged in? did you sent the right app name?", fg="red"))
 
     def restart_app(self, app):
         reply = self.connection.restart_app(app)
@@ -93,7 +93,7 @@ class NebulaCall:
             click.echo(click.style("restarting nebula app: " + app, fg="yellow"))
         else:
             click.echo(click.style("error restarting " + app
-                                   + ", are you sure you logged in with the correct information?", fg="red"))
+                                   + ", did you logged in? did you sent the right app name?", fg="red"))
 
     def update_app(self, app, config):
         reply = self.connection.update_app(app, config)
@@ -103,7 +103,7 @@ class NebulaCall:
             click.echo(click.style("error updating " + app + ", missing\incorrect parameters", fg="red"))
         else:
             click.echo(click.style("error updating " + app
-                                   + ", are you sure you logged in with the correct information?", fg="red"))
+                                   + ", did you logged in? did you sent the right params & app name?", fg="red"))
 
     def roll_app(self, app):
         reply = self.connection.roll_app(app)
@@ -111,7 +111,7 @@ class NebulaCall:
             click.echo(click.style("rolling nebula app: " + app, fg="yellow"))
         else:
             click.echo(click.style("error rolling " + app
-                                   + ", are you sure you logged in with the correct information?", fg="red"))
+                                   + ", did you logged in? did you sent the right app name?", fg="red"))
 
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
