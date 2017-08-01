@@ -66,16 +66,16 @@ class NebulaCall:
         if reply.status_code == 200:
             reply_json = reply.json()
             if reply_json == {'api_available': 'True'}:
-                click.echo("pong")
+                click.echo("nebula responding as expected")
             else:
                 click.echo(
                     click.style(
-                        "nebula responding, are you logged in?",
+                        "nebula api not responding, are you logged in?",
                         fg="red"))
         else:
             click.echo(
                 click.style(
-                    "nebula not responding, are you logged in?",
+                    "nebula api not responding, are you logged in?",
                     fg="red"))
 
     def list_app_info(self, app):
