@@ -61,6 +61,23 @@ class NebulaCall:
                     "error retuning list of nebula apps, are you logged in?",
                     fg="red"))
 
+    def check_api(self):
+        reply = self.connection.check_api()
+        if reply.status_code == 200:
+            reply_json = reply.json()
+            if reply_json == {'api_available': 'True'}:
+                click.echo("pong")
+            else:
+                click.echo(
+                    click.style(
+                        "nebula responding, are you logged in?",
+                        fg="red"))
+        else:
+            click.echo(
+                click.style(
+                    "nebula not responding, are you logged in?",
+                    fg="red"))
+
     def list_app_info(self, app):
         reply = self.connection.list_app_info(app)
         reply_json = reply.json()
@@ -152,6 +169,10 @@ def list():
     connection = NebulaCall()
     connection.list_apps()
 
+@nebulactl.command(help="check nebula api responds")
+def ping():
+    connection = NebulaCall()
+    connection.check_api()
 
 # create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
 @nebulactl.command(help="create a new nebula app")
