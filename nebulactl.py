@@ -122,6 +122,7 @@ def nebulactl():
     pass
 
 
+# creates a cred file at ~/.nebula.json with the auth credentials or updates it's values if it exists
 @nebulactl.command(help="login to nebula")
 @click.option('--username', '-u', prompt='what is nebula api-manager basic auth username?',
               help='nebula api-manager basic auth username')
@@ -138,6 +139,7 @@ def login(username, password, host, port, protocol):
     json.dump({"username": username, "password": password, "host": host, "port": port, "protocol": protocol}, auth_file)
     auth_file.write('\n')
 
+# deletes the cred file from the user home folder
 @nebulactl.command(help="logout of nebula, useful when you want to make sure to delete stored credentials")
 def logout():
     home = expanduser("~")
