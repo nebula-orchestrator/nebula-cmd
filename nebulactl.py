@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-import click, json, ast
+import click, json, ast, os
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
@@ -138,6 +138,10 @@ def login(username, password, host, port, protocol):
     json.dump({"username": username, "password": password, "host": host, "port": port, "protocol": protocol}, auth_file)
     auth_file.write('\n')
 
+@nebulactl.command(help="logout of nebula, useful when you want to make sure to delete stored credentials")
+def logout():
+    home = expanduser("~")
+    os.remove(home + "/.nebula.json",)
 
 @nebulactl.command(help="list nebula apps")
 def list():
