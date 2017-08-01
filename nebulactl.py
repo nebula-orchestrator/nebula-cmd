@@ -169,10 +169,12 @@ def list():
     connection = NebulaCall()
     connection.list_apps()
 
+
 @nebulactl.command(help="check nebula api responds")
 def ping():
     connection = NebulaCall()
     connection.check_api()
+
 
 # create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
 @nebulactl.command(help="create a new nebula app")
