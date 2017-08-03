@@ -4,7 +4,7 @@ from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
 
-VERSION = "0.9.0"
+VERSION = "0.9.1"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -190,7 +190,7 @@ def ping():
               prompt="should the app start in the running state?")
 @click.option('--network_mode', '-n', default="bridge", prompt="what is the app network_mode?",
               help='nebula app network mode (host, bridge, etc...), defaults to bridge')
-@click.option('--volumes', '-v', default=[], prompt="what is the app volume mounts?",
+@click.option('--volumes', '-v', default='', prompt="what is the app volume mounts?",
               help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
 def create(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes):
     starting_ports = starting_ports.split(",")
