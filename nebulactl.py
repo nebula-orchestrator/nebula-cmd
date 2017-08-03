@@ -259,7 +259,7 @@ def restart(app):
 @click.option('--image', '-i', help='nebula app docker image')
 @click.option('--running', '-r', help='nebula app running/stopped state')
 @click.option('--network_mode', '-n', help='nebula app network mode (host, bridge, etc...)')
-@click.option('--volumes', '-v', help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
+@click.option('--volumes', '-v', help='nebula app volume mounts in csv format')
 def update(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes):
     config_json = {}
     if starting_ports is not None:
@@ -284,8 +284,12 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
     if network_mode is not None:
         config_json["network_mode"] = str(network_mode)
     if volumes is not None:
-        volumes = volumes.split(",")
-        config_json["volumes"] = volumes
+        if volumes is not "[]":
+            volumes = volumes.split(",")
+            config_json["volumes"] = volumes
+        elif volumes is "[]":
+            config_json["volumes"] = []
+
     connection = NebulaCall()
     connection.update_app(app, config_json)
 
