@@ -4,7 +4,7 @@ from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
 
-VERSION = "0.8.3"
+VERSION = "0.9.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -190,7 +190,9 @@ def ping():
               prompt="should the app start in the running state?")
 @click.option('--network_mode', '-n', default="bridge", prompt="what is the app network_mode?",
               help='nebula app network mode (host, bridge, etc...), defaults to bridge')
-def create(app, starting_ports, containers_per, env_vars, image, running, network_mode):
+@click.option('--volumes', '-v', default=[], prompt="what is the app volume mounts?",
+              help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
+def create(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes):
     starting_ports = starting_ports.split(",")
     ports_list = []
     for ports in starting_ports:
@@ -199,10 +201,11 @@ def create(app, starting_ports, containers_per, env_vars, image, running, networ
         ports_list.append(ports_dict)
     containers_per = str(containers_per).split(":")
     containers_per_dict = {containers_per[0]: int(containers_per[1])}
+    volumes = volumes.split(",")
     env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
     config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
                    "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
-                   "network_mode": str(network_mode)}
+                   "network_mode": str(network_mode), "volumes": volumes}
     connection = NebulaCall()
     connection.create_app(app, config_json)
 
@@ -255,7 +258,8 @@ def restart(app):
 @click.option('--image', '-i', help='nebula app docker image')
 @click.option('--running', '-r', help='nebula app running/stopped state')
 @click.option('--network_mode', '-n', help='nebula app network mode (host, bridge, etc...)')
-def update(app, starting_ports, containers_per, env_vars, image, running, network_mode):
+@click.option('--volumes', '-v', default=[], help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
+def update(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes):
     config_json = {}
     if starting_ports is not None:
         starting_ports = starting_ports.split(",")
@@ -278,6 +282,9 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
         config_json["running"] = bool(running)
     if network_mode is not None:
         config_json["network_mode"] = str(network_mode)
+    if volumes is not None:
+        volumes = volumes.split(",")
+        config_json["volumes"] = volumes
     connection = NebulaCall()
     connection.update_app(app, config_json)
 
