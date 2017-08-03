@@ -190,7 +190,7 @@ def ping():
               prompt="should the app start in the running state?")
 @click.option('--network_mode', '-n', default="bridge", prompt="what is the app network_mode?",
               help='nebula app network mode (host, bridge, etc...), defaults to bridge')
-@click.option('--volumes', '-v', default='', prompt="what is the app volume mounts?",
+@click.option('--volumes', '-v', default=[], prompt="what is the app volume mounts?",
               help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
 def create(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes):
     starting_ports = starting_ports.split(",")
@@ -201,7 +201,8 @@ def create(app, starting_ports, containers_per, env_vars, image, running, networ
         ports_list.append(ports_dict)
     containers_per = str(containers_per).split(":")
     containers_per_dict = {containers_per[0]: int(containers_per[1])}
-    volumes = volumes.split(",")
+    if volumes is not []:
+        volumes = volumes.split(",")
     env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
     config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
                    "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
@@ -258,7 +259,7 @@ def restart(app):
 @click.option('--image', '-i', help='nebula app docker image')
 @click.option('--running', '-r', help='nebula app running/stopped state')
 @click.option('--network_mode', '-n', help='nebula app network mode (host, bridge, etc...)')
-@click.option('--volumes', '-v', default=[], help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
+@click.option('--volumes', '-v', help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
 def update(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes):
     config_json = {}
     if starting_ports is not None:
