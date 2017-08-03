@@ -284,10 +284,10 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
     if network_mode is not None:
         config_json["network_mode"] = str(network_mode)
     if volumes is not None:
-        if volumes is not "[]":
+        if volumes != '[]':
             volumes = volumes.split(",")
             config_json["volumes"] = volumes
-        elif volumes is "[]":
+        elif volumes == '[]':
             config_json["volumes"] = []
 
     connection = NebulaCall()
