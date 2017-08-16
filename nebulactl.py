@@ -294,6 +294,8 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
         if devices != '[]':
             devices = volumes.split(",")
             config_json["devices"] = devices
+        elif devices == '[]':
+            config_json["devices"] = []
     if privileged is not None:
         config_json["privileged"] = bool(privileged)
     if volumes is not None:
