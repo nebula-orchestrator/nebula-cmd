@@ -291,7 +291,9 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
     if network_mode is not None:
         config_json["network_mode"] = str(network_mode)
     if devices is not None:
-        config_json["devices"] = devices
+        if devices != '[]':
+            devices = volumes.split(",")
+            config_json["devices"] = devices
     if privileged is not None:
         config_json["privileged"] = bool(privileged)
     if volumes is not None:
