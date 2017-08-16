@@ -292,7 +292,7 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
         config_json["network_mode"] = str(network_mode)
     if devices is not None:
         if devices != '[]':
-            devices = volumes.split(",")
+            devices = devices.split(",")
             config_json["devices"] = devices
         elif devices == '[]':
             config_json["devices"] = []
