@@ -4,7 +4,7 @@ from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
 
-VERSION = "1.0.1"
+VERSION = "1.1.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -188,15 +188,15 @@ def ping():
 @click.option('--image', '-i', help='nebula app docker image', prompt="what is the app docker image?")
 @click.option('--running', '-r', default=True, help='nebula app running/stopped state, defaults to True',
               prompt="should the app start in the running state?")
-@click.option('--network_mode', '-n', default="bridge", prompt="what is the app network_mode?",
-              help='nebula app network mode (host, bridge, etc...), defaults to bridge')
+@click.option('--networks', '-n', default="bridge", prompt="what is the app networks?",
+              help='nebula app network mode in csv format, defaults to [] ("nebula")')
 @click.option('--volumes', '-v', default=[], prompt="what is the app volume mounts?",
               help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
 @click.option('--devices', '-d', default=[], prompt="what is the app devices mounts?",
               help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
 @click.option('--privileged', '-P', default=False, help='nebula app privileged state, defaults to False',
               prompt="should the app start with privileged permissions?")
-def create(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes, devices, privileged):
+def create(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
     starting_ports = starting_ports.split(",")
     ports_list = []
     for ports in starting_ports:
@@ -207,10 +207,12 @@ def create(app, starting_ports, containers_per, env_vars, image, running, networ
     containers_per_dict = {containers_per[0]: int(containers_per[1])}
     if volumes is not []:
         volumes = volumes.split(",")
+    if networks is not []:
+        networks = networks.split(",")
     env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
     config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
                    "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
-                   "network_mode": str(network_mode), "volumes": volumes, "devices": devices,
+                   "networks": networks, "volumes": volumes, "devices": devices,
                    "privileged": bool(privileged)}
     connection = NebulaCall()
     connection.create_app(app, config_json)
@@ -263,11 +265,11 @@ def restart(app):
 @click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value,key1:value1...')
 @click.option('--image', '-i', help='nebula app docker image')
 @click.option('--running', '-r', help='nebula app running/stopped state')
-@click.option('--network_mode', '-n', help='nebula app network mode (host, bridge, etc...)')
+@click.option('--networks', '-n', help='nebula app network mode in csv format')
 @click.option('--volumes', '-v', help='nebula app volume mounts in csv format')
 @click.option('--devices', '-d', help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
 @click.option('--privileged', '-P', help='nebula app privileged state, defaults to False')
-def update(app, starting_ports, containers_per, env_vars, image, running, network_mode, volumes, devices, privileged):
+def update(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
     config_json = {}
     if starting_ports is not None:
         starting_ports = starting_ports.split(",")
@@ -288,8 +290,12 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
         config_json["docker_image"] = str(image)
     if running is not None:
         config_json["running"] = bool(running)
-    if network_mode is not None:
-        config_json["network_mode"] = str(network_mode)
+    if networks is not None:
+        if networks != '[]':
+            networks = networks.split(",")
+            config_json["networks"] = networks
+        elif networks == '[]':
+            config_json["networks"] = []
     if devices is not None:
         if devices != '[]':
             devices = devices.split(",")
