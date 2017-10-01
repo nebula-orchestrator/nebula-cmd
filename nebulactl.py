@@ -134,7 +134,8 @@ class NebulaCall:
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
 @click.version_option(version=VERSION)
-@click.group(help="manage a nebula cluster")
+@click.group(help="Connect to a Nebula orcherstrator management endpoint, Create Nebula apps and Manage them all from "
+                  "a simple CLI.")
 def nebulactl():
     pass
 
