@@ -1,10 +1,10 @@
 #!/usr/bin/env python2.7
-import click, json, ast, os
+import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -17,7 +17,7 @@ class NebulaCall:
             home = expanduser("~")
             auth_file = open(home + "/.nebula.json", "r")
             auth_json = json.load(auth_file)
-            self.connection = Nebula(username=auth_json["username"], password=auth_json["password"],
+            self.connection = Nebula(username=auth_json["username"], password=base64.b64decode(auth_json["password"]),
                                      host=auth_json["host"], port=auth_json["port"], protocol=auth_json["protocol"])
         except:
             click.echo(click.style("error reading ~/nebula.json auth file, try logging in first", fg="red"))
@@ -154,7 +154,7 @@ def nebulactl():
 def login(username, password, host, port, protocol):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
-    json.dump({"username": username, "password": password, "host": host, "port": port, "protocol": protocol}, auth_file)
+    json.dump({"username": username, "password": base64.b64encode(password), "host": host, "port": port, "protocol": protocol}, auth_file)
     auth_file.write('\n')
 
 
