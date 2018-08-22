@@ -4,7 +4,7 @@ from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
 
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
