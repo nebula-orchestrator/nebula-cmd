@@ -3,7 +3,6 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-
 VERSION = "1.4.0"
 
 
@@ -12,7 +11,7 @@ VERSION = "1.4.0"
 class NebulaCall:
 
     # the init step reads from the authfile, not keeping connection open as it's a CLI
-    def __init__(self,):
+    def __init__(self, ):
         try:
             home = expanduser("~")
             auth_file = open(home + "/.nebula.json", "r")
@@ -163,7 +162,7 @@ def login(username, password, host, port, protocol):
 @nebulactl.command(help="logout of nebula, useful when you want to make sure to delete stored credentials")
 def logout():
     home = expanduser("~")
-    os.remove(home + "/.nebula.json",)
+    os.remove(home + "/.nebula.json", )
 
 
 @nebulactl.command(help="list nebula apps")
@@ -180,7 +179,7 @@ def ping():
 
 # create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
 @nebulactl.command(help="create a new nebula app")
-@click.option('--app', '-a', help='nebula app name to create',  prompt='what is nebula app name to create?')
+@click.option('--app', '-a', help='nebula app name to create', prompt='what is nebula app name to create?')
 @click.option('--starting_ports', '-p', prompt="what are the app starting ports?", default=[],
               help='starting ports to run in the format of X:Y,A:B where X,A=host_port & Y,B=container_port')
 @click.option('--containers_per', '-c', prompt="what are the app containers_per value?",
