@@ -187,15 +187,16 @@ def ping():
 @click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value,key1:value1... defaults to none',
               prompt="what are the app envvars?")
 @click.option('--image', '-i', help='nebula app docker image', prompt="what is the app docker image?")
-@click.option('--running', '-r', default=True, help='nebula app running/stopped state, defaults to True',
+@click.option('--running/--stopped', '-r/-s', default=True, help='nebula app running/stopped state, defaults to True',
               prompt="should the app start in the running state?")
-@click.option('--networks', '-n', default="bridge", prompt="what is the app networks?",
+@click.option('--networks', '-n', default="", prompt="what is the app networks?",
               help='nebula app network mode in csv format, defaults to [] ("nebula")')
 @click.option('--volumes', '-v', default=[], prompt="what is the app volume mounts?",
               help='nebula app volume mounts in csv format, defaults to [] (none/empty)')
 @click.option('--devices', '-d', default=[], prompt="what is the app devices mounts?",
               help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
-@click.option('--privileged', '-P', default=False, help='nebula app privileged state, defaults to False',
+@click.option('--privileged/--unprivileged', '-P/-U', default=False,
+              help='nebula app privileged state, defaults to False',
               prompt="should the app start with privileged permissions?")
 def create(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
     starting_ports = starting_ports.split(",")
@@ -265,11 +266,11 @@ def restart(app):
               help='cpu:X or server:X where X is the number of containers per cpu\server to have')
 @click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value,key1:value1...')
 @click.option('--image', '-i', help='nebula app docker image')
-@click.option('--running', '-r', help='nebula app running/stopped state')
+@click.option('--running/--stopped', '-r/-s', help='nebula app running/stopped state')
 @click.option('--networks', '-n', help='nebula app network mode in csv format')
 @click.option('--volumes', '-v', help='nebula app volume mounts in csv format')
 @click.option('--devices', '-d', help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
-@click.option('--privileged', '-P', help='nebula app privileged state, defaults to False')
+@click.option('--privileged/--unprivileged', '-P/-U', help='nebula app privileged state, defaults to False')
 def update(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
     config_json = {}
     if starting_ports is not None:
