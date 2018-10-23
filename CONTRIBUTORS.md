@@ -14,3 +14,5 @@ Nebula contributors
   * First users\victims
 
 * **[Jakob Pederson](https://github.com/jakobpederson)**
+
+  * Travis CI
