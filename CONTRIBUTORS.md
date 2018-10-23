@@ -12,3 +12,7 @@ Nebula contributors
   * Design
   * Support
   * First users\victims
+
+* **[Jakob Pederson](https://github.com/jakobpederson)**
+
+  * Travis CI
