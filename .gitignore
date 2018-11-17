@@ -100,5 +100,6 @@ ENV/
 .mypy_cache/
 .idea/
 
-# test
+# upload github ignores
 build
+.spec
