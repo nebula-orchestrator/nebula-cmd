@@ -164,7 +164,7 @@
  [],
  False,
  False,
- 1542668705,
+ 1542668779,
  [('run',
    '/home/travis/virtualenv/python2.7.14/lib/python2.7/site-packages/PyInstaller/bootloader/Linux-64bit/run',
    'EXECUTABLE')])
