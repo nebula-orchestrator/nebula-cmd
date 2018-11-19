@@ -99,7 +99,3 @@ ENV/
 # mypy
 .mypy_cache/
 .idea/
-
-# upload github ignores
-build
-.spec
