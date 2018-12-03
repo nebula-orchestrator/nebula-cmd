@@ -129,6 +129,14 @@ class NebulaCall:
             click.echo(click.style("error rolling " + app
                                    + ", are you logged in? did you sent the right app name?", fg="red"))
 
+    def prune_images(self, app):
+        reply = self.connection.prune_images(app)
+        if reply.status_code == 202:
+            click.echo(click.style("pruning images on devices running app: " + app, fg="yellow"))
+        else:
+            click.echo(click.style("error pruning images on devices running app:" + app
+                                   + ", are you logged in? did you sent the right app name?", fg="red"))
+
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
@@ -323,6 +331,14 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
 def roll(app):
     connection = NebulaCall()
     connection.roll_app(app)
+
+
+@nebulactl.command(help="prune unused images on devices running an app")
+@click.option('--app', '-a', prompt='what is a nebula app name on devices you want to prune unused images on?',
+              help='nebula app name to rolling restart')
+def prune(app):
+    connection = NebulaCall()
+    connection.prune_images(app)
 
 
 if __name__ == '__main__':
