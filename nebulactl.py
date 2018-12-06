@@ -149,15 +149,15 @@ def nebulactl():
 
 # creates a cred file at ~/.nebula.json with the auth credentials or updates it's values if it exists
 @nebulactl.command(help="login to nebula")
-@click.option('--username', '-u', prompt='what is nebula api-manager basic auth username?',
-              help='nebula api-manager basic auth username')
-@click.option('--password', '-p', prompt='what is nebula api-manager basic auth password?', hide_input=True,
-              confirmation_prompt=True, help='nebula api-manager basic auth password')
-@click.option('--host', '-h', prompt='what is nebula api-manager host?', help='nebula api-manager host.')
-@click.option('--port', '-c', prompt='what is nebula api-manager port?', help='nebula api-manager port, defaults to 80',
+@click.option('--username', '-u', prompt='what is nebula manager basic auth username?',
+              help='nebula manager basic auth username')
+@click.option('--password', '-p', prompt='what is nebula manager basic auth password?', hide_input=True,
+              confirmation_prompt=True, help='nebula manager basic auth password')
+@click.option('--host', '-h', prompt='what is nebula manager host?', help='nebula manager host.')
+@click.option('--port', '-c', prompt='what is nebula manager port?', help='nebula manager port, defaults to 80',
               default=80, type=click.IntRange(1, 65535))
-@click.option('--protocol', '-P', prompt='what is nebula api-manager protocol?', default="http",
-              help='nebula api-manager protocol, defaults to http')
+@click.option('--protocol', '-P', prompt='what is nebula manager protocol?', default="http",
+              help='nebula manager protocol, defaults to http')
 def login(username, password, host, port, protocol):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
