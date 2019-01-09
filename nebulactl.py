@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "1.6.0"
+VERSION = "2.0.0a"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -27,7 +27,7 @@ class NebulaCall:
         if reply.status_code == 202:
             click.echo(click.style("creating nebula app: " + app, fg="green"))
         elif reply.status_code == 400:
-            click.echo(click.style("error creating " + app + ", missing\incorrect parameters", fg="red"))
+            click.echo(click.style("error creating " + app + ", missing or incorrect parameters", fg="red"))
         elif reply.status_code == 403:
             click.echo(click.style("error creating " + app + ", app already exist", fg="red"))
         else:
@@ -116,7 +116,7 @@ class NebulaCall:
         if reply.status_code == 202:
             click.echo("updating nebula app: " + app)
         elif reply.status_code == 400:
-            click.echo(click.style("error updating " + app + ", missing\incorrect parameters", fg="red"))
+            click.echo(click.style("error updating " + app + ", missing or incorrect parameters", fg="red"))
         else:
             click.echo(click.style("error updating " + app
                                    + ", are you logged in? did you sent the right params & app name?", fg="red"))
@@ -191,7 +191,7 @@ def ping():
 @click.option('--starting_ports', '-p', prompt="what are the app starting ports?", default=[],
               help='starting ports to run in the format of X:Y,A:B where X,A=host_port & Y,B=container_port')
 @click.option('--containers_per', '-c', prompt="what are the app containers_per value?",
-              help='cpu:X or server:X where X is the number of containers per cpu\server to have')
+              help='cpu:X or server:X where X is the number of containers per cpu or server to have')
 @click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value,key1:value1... defaults to none',
               prompt="what are the app envvars?")
 @click.option('--image', '-i', help='nebula app docker image', prompt="what is the app docker image?")
@@ -271,7 +271,7 @@ def restart(app):
 @click.option('--starting_ports', '-p',
               help='starting ports to run in the format of X:Y,A:B where X,A=host_port & Y,B=container_port')
 @click.option('--containers_per', '-c',
-              help='cpu:X or server:X where X is the number of containers per cpu\server to have')
+              help='cpu:X or server:X where X is the number of containers per cpu or server to have')
 @click.option('--env_vars', '-e', help='nebula app envvars in the format of key:value,key1:value1...')
 @click.option('--image', '-i', help='nebula app docker image')
 @click.option('--running/--stopped', '-r/-s', help='nebula app running/stopped state')
