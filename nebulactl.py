@@ -228,7 +228,9 @@ def list_apps():
 @click.option('--privileged/--unprivileged', '-P/-U', default=False,
               help='nebula app privileged state, defaults to False',
               prompt="should the app start with privileged permissions?")
-def create_app(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
+@click.option('--rolling/--restart', help='nebula app rolling restart/normal restart state')
+def create_app(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged,
+               rolling):
     starting_ports = starting_ports.split(",")
     ports_list = []
     for ports in starting_ports:
@@ -245,7 +247,7 @@ def create_app(app, starting_ports, containers_per, env_vars, image, running, ne
     config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
                    "env_vars": dict(env_vars), "docker_image": str(image), "running": bool(running),
                    "networks": networks, "volumes": volumes, "devices": devices,
-                   "privileged": bool(privileged)}
+                   "privileged": bool(privileged), "rolling_restart": bool(rolling)}
     connection = NebulaCall()
     connection.create_app(app, config_json)
 
@@ -299,9 +301,11 @@ def restart(app):
 @click.option('--running/--stopped', '-r/-s', help='nebula app running/stopped state')
 @click.option('--networks', '-n', help='nebula app network mode in csv format')
 @click.option('--volumes', '-v', help='nebula app volume mounts in csv format')
-@click.option('--devices', '-d', help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
+@click.option('-- ', '-d', help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
 @click.option('--privileged/--unprivileged', '-P/-U', help='nebula app privileged state, defaults to False')
-def update(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
+@click.option('--rolling/--restart', help='nebula app rolling restart/normal restart state')
+def update(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged,
+           rolling):
     config_json = {}
     if starting_ports is not None:
         starting_ports = starting_ports.split(",")
@@ -322,6 +326,8 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
         config_json["docker_image"] = str(image)
     if running is not None:
         config_json["running"] = bool(running)
+    if rolling is not None:
+        config_json["rolling_restart"] = bool(rolling)
     if networks is not None:
         if networks != '[]':
             networks = networks.split(",")
