@@ -157,6 +157,18 @@ class NebulaCall:
         else:
             click.echo(click.style("error listing device_groups, are you logged in?", fg="red"))
 
+    def delete_device_group(self, device_group):
+        reply = self.connection.delete_device_group(device_group)
+        if reply["status_code"] == 200:
+            click.echo(click.style("deleted device_group " + device_group, fg="red"))
+        else:
+            click.echo(click.style("error listing device_group :" + device_group
+                                   + ", are you logged in? did you sent the right device_group name?", fg="red"))
+
+    # TODO - add update device_group
+
+    # TODO - add create device_group
+
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
@@ -399,6 +411,21 @@ def prune_device_group(device_group):
 def prune_all():
     connection = NebulaCall()
     connection.prune_images()
+
+
+@device_groups.command(help="delete a device_group", name="delete")
+@click.option('--device_group', '-d', help='nebula device_group to delete', prompt='what is the device_group name?')
+@click.confirmation_option(help='auto confirm you want to delete the device_group',
+                           prompt="are you sure you want to delete? there is no restore option")
+def device_group_delete(device_group):
+    connection = NebulaCall()
+    connection.delete_device_group(device_group)
+
+
+# TODO - add update device_group
+
+
+# TODO - add create device_group
 
 
 if __name__ == '__main__':
