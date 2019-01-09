@@ -138,6 +138,25 @@ class NebulaCall:
             click.echo(click.style("error pruning images on all devices, are you logged in? did you sent the "
                                    "right app name?", fg="red"))
 
+    def list_device_group(self, device_group):
+        reply = self.connection.list_device_group(device_group)
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in reply_json.items():
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing device_group :" + device_group
+                                   + ", are you logged in? did you sent the right device_group name?", fg="red"))
+
+    def list_device_groups(self):
+        reply = self.connection.list_device_groups()
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in reply_json.items():
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing device_groups, are you logged in?", fg="red"))
+
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
@@ -352,6 +371,20 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
 
     connection = NebulaCall()
     connection.update_app(app, config_json)
+
+
+@device_groups.command(help="list a device_group", name="info")
+@click.option('--device_group', '-d', help='nebula device_group to get config of',
+              prompt='what is the device_group name?')
+def device_group_info(device_group):
+    connection = NebulaCall()
+    connection.list_device_group(device_group)
+
+
+@device_groups.command(help="list all device_groups", name="list")
+def list_all_device_groups():
+    connection = NebulaCall()
+    connection.list_device_groups()
 
 
 @prune.command(help="prune unused images on a device_group", name="device_group")
