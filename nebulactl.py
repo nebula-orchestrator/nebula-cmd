@@ -18,7 +18,8 @@ class NebulaCall:
             auth_json = json.load(auth_file)
             self.connection = Nebula(username=auth_json["username"], password=base64.b64decode(auth_json["password"]),
                                      host=auth_json["host"], port=auth_json["port"], protocol=auth_json["protocol"])
-        except:
+        except Exception as e:
+            click.echo(click.style(e, fg="red"))
             click.echo(click.style("error reading ~/nebula.json auth file, try logging in first", fg="red"))
             exit(2)
 
