@@ -228,7 +228,8 @@ def list_apps():
 @click.option('--privileged/--unprivileged', '-P/-U', default=False,
               help='nebula app privileged state, defaults to False',
               prompt="should the app start with privileged permissions?")
-@click.option('--rolling/--restart', help='nebula app rolling restart/normal restart state')
+@click.option('--rolling/--restart', '-R/-S', default=False, help='nebula app rolling restart/normal restart state',
+              prompt="should the app roll or restart normally?")
 def create_app(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged,
                rolling):
     starting_ports = starting_ports.split(",")
@@ -301,9 +302,9 @@ def restart(app):
 @click.option('--running/--stopped', '-r/-s', help='nebula app running/stopped state')
 @click.option('--networks', '-n', help='nebula app network mode in csv format')
 @click.option('--volumes', '-v', help='nebula app volume mounts in csv format')
-@click.option('-- ', '-d', help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
+@click.option('--devices', '-d', help='nebula app devices mounts in csv format, defaults to [] (none/empty)')
 @click.option('--privileged/--unprivileged', '-P/-U', help='nebula app privileged state, defaults to False')
-@click.option('--rolling/--restart', help='nebula app rolling restart/normal restart state')
+@click.option('--rolling/--restart', '-R/-S', help='nebula app rolling restart/normal restart state')
 def update(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged,
            rolling):
     config_json = {}
