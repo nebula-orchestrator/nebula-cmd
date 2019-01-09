@@ -167,7 +167,17 @@ class NebulaCall:
 
     # TODO - add update device_group
 
-    # TODO - add create device_group
+    def create_device_group(self, device_group, config):
+        reply = self.connection.create_device_group(device_group, config)
+        if reply["status_code"] == 200:
+            click.echo(click.style("creating nebula device_group: " + device_group, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error creating " + device_group + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error creating " + device_group + ", device_group already exist", fg="red"))
+        else:
+            click.echo(click.style("error creating " + device_group
+                                   + ", are you logged in? did you sent the right params & app name?", fg="red"))
 
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
@@ -425,7 +435,16 @@ def device_group_delete(device_group):
 # TODO - add update device_group
 
 
-# TODO - add create device_group
+# create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
+@device_groups.command(help="create a new nebula device_group", name="create")
+@click.option('--device_group', '-d', help='nebula device_group to delete', prompt='what is the device_group name?')
+@click.option('--apps', '-a', prompt="what are the app starting apps?",
+              help='a CSV list of the apps that are part of the device_group')
+def create_app(device_group, apps):
+    apps_list = apps.split(",")
+    config_json = {"apps": apps_list}
+    connection = NebulaCall()
+    connection.create_device_group(device_group, config_json)
 
 
 if __name__ == '__main__':
