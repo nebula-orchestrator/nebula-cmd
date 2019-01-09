@@ -147,11 +147,24 @@ def nebulactl():
     pass
 
 
-# the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
-# things, meaning help text, arguments input, arguments prompts & login file interfacing
+# command group for everything image pruning related
 @click.version_option(version=VERSION)
 @nebulactl.group(help="Prune images.")
 def prune():
+    pass
+
+
+# command group for everything app related
+@click.version_option(version=VERSION)
+@nebulactl.group(help="Manage nebula apps.")
+def apps():
+    pass
+
+
+# command group for everything device_group related
+@click.version_option(version=VERSION)
+@nebulactl.group(help="Manage nebula device_groups.")
+def device_groups():
     pass
 
 
@@ -181,20 +194,20 @@ def logout():
     os.remove(home + "/.nebula.json", )
 
 
-@nebulactl.command(help="list nebula apps", name="list")
-def list_apps():
-    connection = NebulaCall()
-    connection.list_apps()
-
-
 @nebulactl.command(help="check nebula api responds")
 def ping():
     connection = NebulaCall()
     connection.check_api()
 
 
+@apps.command(help="list nebula apps", name="list")
+def list_apps():
+    connection = NebulaCall()
+    connection.list_apps()
+
+
 # create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
-@nebulactl.command(help="create a new nebula app")
+@apps.command(help="create a new nebula app", name="create")
 @click.option('--app', '-a', help='nebula app name to create', prompt='what is nebula app name to create?')
 @click.option('--starting_ports', '-p', prompt="what are the app starting ports?", default=[],
               help='starting ports to run in the format of X:Y,A:B where X,A=host_port & Y,B=container_port')
@@ -214,7 +227,7 @@ def ping():
 @click.option('--privileged/--unprivileged', '-P/-U', default=False,
               help='nebula app privileged state, defaults to False',
               prompt="should the app start with privileged permissions?")
-def create(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
+def create_app(app, starting_ports, containers_per, env_vars, image, running, networks, volumes, devices, privileged):
     starting_ports = starting_ports.split(",")
     ports_list = []
     for ports in starting_ports:
@@ -236,7 +249,7 @@ def create(app, starting_ports, containers_per, env_vars, image, running, networ
     connection.create_app(app, config_json)
 
 
-@nebulactl.command(help="delete a nebula app")
+@apps.command(help="delete a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to delete?', help='nebula app name to delete')
 @click.confirmation_option(help='auto confirm you want to delete the app',
                            prompt="are you sure you want to delete? there is no restore option")
@@ -245,28 +258,28 @@ def delete(app):
     connection.delete_app(app)
 
 
-@nebulactl.command(help="list info of a nebula app")
+@apps.command(help="list info of a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to get info of?', help='nebula app name to get info of')
 def info(app):
     connection = NebulaCall()
     connection.list_app_info(app)
 
 
-@nebulactl.command(help="start a nebula app")
+@apps.command(help="start a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to start?', help='nebula app name to start')
 def start(app):
     connection = NebulaCall()
     connection.start_app(app)
 
 
-@nebulactl.command(help="stop a nebula app")
+@apps.command(help="stop a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to stop?', help='nebula app name to stop')
 def stop(app):
     connection = NebulaCall()
     connection.stop_app(app)
 
 
-@nebulactl.command(help="restart a nebula app")
+@apps.command(help="restart a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to restart?', help='nebula app name to restart')
 def restart(app):
     connection = NebulaCall()
@@ -274,7 +287,7 @@ def restart(app):
 
 
 # update can be any combination of params, only one that's 100% required is the --app so it's the only one i'm prompting
-@nebulactl.command(help="update a nebula app")
+@apps.command(help="update a nebula app")
 @click.option('--app', '-a', prompt='what is nebula app name to update?', help='nebula app name to update')
 @click.option('--starting_ports', '-p',
               help='starting ports to run in the format of X:Y,A:B where X,A=host_port & Y,B=container_port')
