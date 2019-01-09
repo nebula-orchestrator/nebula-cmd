@@ -165,8 +165,6 @@ class NebulaCall:
             click.echo(click.style("error listing device_group :" + device_group
                                    + ", are you logged in? did you sent the right device_group name?", fg="red"))
 
-    # TODO - add update device_group
-
     def create_device_group(self, device_group, config):
         reply = self.connection.create_device_group(device_group, config)
         if reply["status_code"] == 200:
@@ -177,6 +175,18 @@ class NebulaCall:
             click.echo(click.style("error creating " + device_group + ", device_group already exist", fg="red"))
         else:
             click.echo(click.style("error creating " + device_group
+                                   + ", are you logged in? did you sent the right params & app name?", fg="red"))
+
+    def update_device_group(self, device_group, config):
+        reply = self.connection.update_device_group(device_group, config)
+        if reply["status_code"] == 202:
+            click.echo(click.style("updating nebula device_group: " + device_group, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error updating " + device_group + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error updating " + device_group + ", device_group already exist", fg="red"))
+        else:
+            click.echo(click.style("error updating " + device_group
                                    + ", are you logged in? did you sent the right params & app name?", fg="red"))
 
 
@@ -432,19 +442,28 @@ def device_group_delete(device_group):
     connection.delete_device_group(device_group)
 
 
-# TODO - add update device_group
-
-
 # create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
 @device_groups.command(help="create a new nebula device_group", name="create")
 @click.option('--device_group', '-d', help='nebula device_group to delete', prompt='what is the device_group name?')
 @click.option('--apps', '-a', prompt="what are the app starting apps?",
               help='a CSV list of the apps that are part of the device_group')
-def create_app(device_group, apps):
+def device_group_create(device_group, apps):
     apps_list = apps.split(",")
     config_json = {"apps": apps_list}
     connection = NebulaCall()
     connection.create_device_group(device_group, config_json)
+
+
+# create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
+@device_groups.command(help="create a new nebula device_group", name="update")
+@click.option('--device_group', '-d', help='nebula device_group to delete', prompt='what is the device_group name?')
+@click.option('--apps', '-a', prompt="what are the app starting apps?",
+              help='a CSV list of the apps that are part of the device_group')
+def device_group_update(device_group, apps):
+    apps_list = apps.split(",")
+    config_json = {"apps": apps_list}
+    connection = NebulaCall()
+    connection.update_device_group(device_group, config_json)
 
 
 if __name__ == '__main__':
