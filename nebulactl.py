@@ -24,11 +24,11 @@ class NebulaCall:
 
     def create_app(self, app, config):
         reply = self.connection.create_app(app, config)
-        if reply.status_code == 202:
+        if reply["status_code"] == 200:
             click.echo(click.style("creating nebula app: " + app, fg="green"))
-        elif reply.status_code == 400:
+        elif reply["status_code"] == 400:
             click.echo(click.style("error creating " + app + ", missing or incorrect parameters", fg="red"))
-        elif reply.status_code == 403:
+        elif reply["status_code"] == 403:
             click.echo(click.style("error creating " + app + ", app already exist", fg="red"))
         else:
             click.echo(click.style("error creating " + app
@@ -36,9 +36,9 @@ class NebulaCall:
 
     def delete_app(self, app):
         reply = self.connection.delete_app(app)
-        if reply.status_code == 202:
+        if reply["status_code"] == 200:
             click.echo(click.style("deleting nebula app: " + app, fg="magenta"))
-        elif reply.status_code == 403:
+        elif reply["status_code"] == 403:
             click.echo(click.style("error deleting " + app + ", app doesn't exist", fg="red"))
         else:
             click.echo(click.style("error deleting " + app
@@ -46,8 +46,8 @@ class NebulaCall:
 
     def list_apps(self):
         reply = self.connection.list_apps()
-        if reply.status_code == 200:
-            reply_json = reply.json()
+        if reply["status_code"] == 200:
+            reply_json = reply["reply"]
             if len(reply_json["apps"]) == 0:
                 click.echo("no apps in nebula cluster")
             else:
@@ -62,8 +62,8 @@ class NebulaCall:
 
     def check_api(self):
         reply = self.connection.check_api()
-        if reply.status_code == 200:
-            reply_json = reply.json()
+        if reply["status_code"] == 200:
+            reply_json = reply["reply"]
             if reply_json == {'api_available': 'True'}:
                 click.echo("nebula responding as expected")
             else:
@@ -79,8 +79,8 @@ class NebulaCall:
 
     def list_app_info(self, app):
         reply = self.connection.list_app_info(app)
-        reply_json = reply.json()
-        if reply.status_code == 200:
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
             for key, value in reply_json.items():
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
@@ -89,7 +89,7 @@ class NebulaCall:
 
     def stop_app(self, app):
         reply = self.connection.stop_app(app)
-        if reply.status_code == 202:
+        if reply["status_code"] == 202:
             click.echo("stopping nebula app: " + app)
         else:
             click.echo(click.style("error stopping " + app +
@@ -97,7 +97,7 @@ class NebulaCall:
 
     def start_app(self, app):
         reply = self.connection.start_app(app)
-        if reply.status_code == 202:
+        if reply["status_code"] == 202:
             click.echo("starting nebula app: " + app)
         else:
             click.echo(click.style("error starting " + app
@@ -105,7 +105,7 @@ class NebulaCall:
 
     def restart_app(self, app):
         reply = self.connection.restart_app(app)
-        if reply.status_code == 202:
+        if reply["status_code"] == 202:
             click.echo(click.style("restarting nebula app: " + app, fg="yellow"))
         else:
             click.echo(click.style("error restarting " + app
@@ -113,9 +113,9 @@ class NebulaCall:
 
     def update_app(self, app, config):
         reply = self.connection.update_app(app, config)
-        if reply.status_code == 202:
+        if reply["status_code"] == 202:
             click.echo("updating nebula app: " + app)
-        elif reply.status_code == 400:
+        elif reply["status_code"] == 400:
             click.echo(click.style("error updating " + app + ", missing or incorrect parameters", fg="red"))
         else:
             click.echo(click.style("error updating " + app
@@ -123,7 +123,7 @@ class NebulaCall:
 
     def prune_device_group_images(self, app):
         reply = self.connection.prune__device_group_images(app)
-        if reply.status_code == 202:
+        if reply["status_code"] == 202:
             click.echo(click.style("pruning images on devices running app: " + app, fg="yellow"))
         else:
             click.echo(click.style("error pruning images on devices running app:" + app
@@ -131,7 +131,7 @@ class NebulaCall:
 
     def prune_images(self):
         reply = self.connection.prune_images()
-        if reply.status_code == 202:
+        if reply["status_code"] == 202:
             click.echo(click.style("pruning images on all devices", fg="yellow"))
         else:
             click.echo(click.style("error pruning images on all devices, are you logged in? did you sent the "
@@ -144,6 +144,14 @@ class NebulaCall:
 @click.group(help="Connect to a Nebula orcherstrator management endpoint, Create Nebula apps and Manage them all from "
                   "a simple CLI.")
 def nebulactl():
+    pass
+
+
+# the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
+# things, meaning help text, arguments input, arguments prompts & login file interfacing
+@click.version_option(version=VERSION)
+@nebulactl.group(help="Prune images.")
+def prune():
     pass
 
 
@@ -173,8 +181,8 @@ def logout():
     os.remove(home + "/.nebula.json", )
 
 
-@nebulactl.command(help="list nebula apps")
-def list():
+@nebulactl.command(help="list nebula apps", name="list")
+def list_apps():
     connection = NebulaCall()
     connection.list_apps()
 
@@ -325,12 +333,18 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
     connection.update_app(app, config_json)
 
 
-@nebulactl.command(help="prune unused images on devices running an app")
-@click.option('--app', '-a', prompt='what is a nebula app name on devices you want to prune unused images on?',
-              help='nebula app name to rolling restart')
-def prune_device_group_images(app):
+@prune.command(help="prune unused images on a device_group", name="device_group")
+@click.option('--device_group', '-d', help='nebula device_group to prune images on',
+              prompt='what is the device_group name on devices you want to prune unused images on?')
+def prune_device_group(device_group):
     connection = NebulaCall()
-    connection.prune_device_group_images(app)
+    connection.prune_device_group_images(device_group)
+
+
+@prune.command(help="prune unused images on all device_groups", name="all")
+def prune_all():
+    connection = NebulaCall()
+    connection.prune_images()
 
 
 if __name__ == '__main__':
