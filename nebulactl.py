@@ -121,21 +121,21 @@ class NebulaCall:
             click.echo(click.style("error updating " + app
                                    + ", are you logged in? did you sent the right params & app name?", fg="red"))
 
-    def roll_app(self, app):
-        reply = self.connection.roll_app(app)
-        if reply.status_code == 202:
-            click.echo(click.style("rolling nebula app: " + app, fg="yellow"))
-        else:
-            click.echo(click.style("error rolling " + app
-                                   + ", are you logged in? did you sent the right app name?", fg="red"))
-
-    def prune_images(self, app):
-        reply = self.connection.prune_images(app)
+    def prune_device_group_images(self, app):
+        reply = self.connection.prune__device_group_images(app)
         if reply.status_code == 202:
             click.echo(click.style("pruning images on devices running app: " + app, fg="yellow"))
         else:
             click.echo(click.style("error pruning images on devices running app:" + app
                                    + ", are you logged in? did you sent the right app name?", fg="red"))
+
+    def prune_images(self):
+        reply = self.connection.prune_images()
+        if reply.status_code == 202:
+            click.echo(click.style("pruning images on all devices", fg="yellow"))
+        else:
+            click.echo(click.style("error pruning images on all devices, are you logged in? did you sent the "
+                                   "right app name?", fg="red"))
 
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
@@ -325,20 +325,12 @@ def update(app, starting_ports, containers_per, env_vars, image, running, networ
     connection.update_app(app, config_json)
 
 
-@nebulactl.command(help="rolling restart a nebula apps")
-@click.option('--app', '-a', prompt='what is nebula app name to rolling restart?',
-              help='nebula app name to rolling restart')
-def roll(app):
-    connection = NebulaCall()
-    connection.roll_app(app)
-
-
 @nebulactl.command(help="prune unused images on devices running an app")
 @click.option('--app', '-a', prompt='what is a nebula app name on devices you want to prune unused images on?',
               help='nebula app name to rolling restart')
-def prune(app):
+def prune_device_group_images(app):
     connection = NebulaCall()
-    connection.prune_images(app)
+    connection.prune_device_group_images(app)
 
 
 if __name__ == '__main__':
