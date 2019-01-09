@@ -64,7 +64,7 @@ class NebulaCall:
         reply = self.connection.check_api()
         if reply["status_code"] == 200:
             reply_json = reply["reply"]
-            if reply_json == {'api_available': 'True'}:
+            if reply_json == {'api_available': True}:
                 click.echo("nebula responding as expected")
             else:
                 click.echo(
