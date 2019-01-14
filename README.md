@@ -20,5 +20,5 @@ nebulactl login --username <root> --password <password> --host <nebula.host.com>
 ## use
 
 ```bash
-nebulactl list
+nebulactl apps list
 ```
