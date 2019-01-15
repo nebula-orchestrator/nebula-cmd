@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -442,10 +442,9 @@ def device_group_delete(device_group):
     connection.delete_device_group(device_group)
 
 
-# create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
 @device_groups.command(help="create a new nebula device_group", name="create")
-@click.option('--device_group', '-d', help='nebula device_group to delete', prompt='what is the device_group name?')
-@click.option('--apps', '-a', prompt="what are the app starting apps?",
+@click.option('--device_group', '-d', help='nebula device_group to create', prompt='what is the device_group name?')
+@click.option('--apps', '-a', prompt="what are the device_group apps?",
               help='a CSV list of the apps that are part of the device_group')
 def device_group_create(device_group, apps):
     apps_list = apps.split(",")
@@ -454,10 +453,9 @@ def device_group_create(device_group, apps):
     connection.create_device_group(device_group, config_json)
 
 
-# create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
-@device_groups.command(help="create a new nebula device_group", name="update")
-@click.option('--device_group', '-d', help='nebula device_group to delete', prompt='what is the device_group name?')
-@click.option('--apps', '-a', prompt="what are the app starting apps?",
+@device_groups.command(help="update a new nebula device_group", name="update")
+@click.option('--device_group', '-d', help='nebula device_group to update', prompt='what is the device_group name?')
+@click.option('--apps', '-a', prompt="what are the device_group apps?",
               help='a CSV list of the apps that are part of the device_group')
 def device_group_update(device_group, apps):
     apps_list = apps.split(",")
