@@ -4,4 +4,5 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - python tests.py
+  - sudo sh test/travis_ci_scripts/travis_ci_build_script.sh
+  - python -m unittest discover
