@@ -1,5 +1,7 @@
 # nebula-cmd
 
+[![Build Status](https://travis-ci.org/nebula-orchestrator/nebula-cmd.svg?branch=master)](https://travis-ci.org/nebula-orchestrator/nebula-cmd)
+
 command line tool for managing [nebula](https://nebula-orchestrator.github.io/) clusters, only tested the CLI on Linux but should also work on Mac's.
 
 refer to the [cmd](http://nebula.readthedocs.io/en/latest/cmd/) part of the guide in readthedocs for more details on how to use, --help is also an option as it's pretty self explanatory.
