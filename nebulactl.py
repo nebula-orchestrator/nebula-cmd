@@ -3,11 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-<<<<<<< HEAD
-VERSION = "1.5.2"
-=======
 VERSION = "2.0.1"
->>>>>>> 7a98782dd53273238df04ee3e908476861cd4dec
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
