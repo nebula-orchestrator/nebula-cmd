@@ -4,5 +4,7 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - sudo sh test/travis_ci_scripts/travis_ci_build_script.sh
-  - python -m unittest discover
+  - python tests.py
+after_success:
+- chmod +x ./upload-nebula.sh
+- ./upload-nebula.sh
