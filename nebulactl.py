@@ -16,7 +16,8 @@ class NebulaCall:
             home = expanduser("~")
             auth_file = open(home + "/.nebula.json", "r")
             auth_json = json.load(auth_file)
-            self.connection = Nebula(username=auth_json["username"], password=base64.b64decode(auth_json["password"]),
+            self.connection = Nebula(username=auth_json["username"],
+                                     password=base64.b64decode(auth_json["password"].encode('utf-8')).decode('utf-8'),
                                      host=auth_json["host"], port=auth_json["port"], protocol=auth_json["protocol"])
         except Exception as e:
             click.echo(click.style(e, fg="red"))
@@ -234,8 +235,8 @@ def device_groups():
 def login(username, password, host, port, protocol):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
-    json.dump({"username": username, "password": base64.b64encode(password), "host": host, "port": port,
-               "protocol": protocol}, auth_file)
+    json.dump({"username": username, "password": base64.b64encode(password.encode('utf-8')).decode('utf-8'),
+               "host": host, "port": port, "protocol": protocol}, auth_file)
     auth_file.write('\n')
 
 
