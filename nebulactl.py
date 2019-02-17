@@ -1,9 +1,9 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.0.2"
+VERSION = "2.1.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -82,7 +82,7 @@ class NebulaCall:
         reply = self.connection.list_app_info(app)
         reply_json = reply["reply"]
         if reply["status_code"] == 200:
-            for key, value in reply_json.items():
+            for key, value in list(reply_json.items()):
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
             click.echo(click.style("error listing " + app
@@ -142,7 +142,7 @@ class NebulaCall:
         reply = self.connection.list_device_group(device_group)
         reply_json = reply["reply"]
         if reply["status_code"] == 200:
-            for key, value in reply_json.items():
+            for key, value in list(reply_json.items()):
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
             click.echo(click.style("error listing device_group :" + device_group
@@ -152,7 +152,7 @@ class NebulaCall:
         reply = self.connection.list_device_groups()
         reply_json = reply["reply"]
         if reply["status_code"] == 200:
-            for key, value in reply_json.items():
+            for key, value in list(reply_json.items()):
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
             click.echo(click.style("error listing device_groups, are you logged in?", fg="red"))
