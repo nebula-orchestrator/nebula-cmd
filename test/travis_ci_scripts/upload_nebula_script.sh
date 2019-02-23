@@ -3,17 +3,15 @@ cd $HOME
 git config --global user.email $USER_EMAIL
 git config --global user.name $USER_NAME
 
-#clone the repository in the buildApk folder
-git clone --quiet --branch=$TRAVIS_BRANCH  https://$USER_NAME:$GITHUB_API_KEY@github.com/$USER_NAME/nebula-cmd  master > /dev/null
-
-cd master
-pyinstaller -F nebulactl.py
-
 MESSAGE=$(git log -1 HEAD --pretty=format:%s)
 
-if [[ "$MESSAGE" == *"Travis build"* ]] || [[ "$MESSAGE" == *"skip travis"* ]]; then
+if [[ "$MESSAGE" == *"Travis build"* ]] || [[ "$MESSAGE" != *"RUN_UPLOAD"* ]]; then
     echo "already pushed"
 else
+    #clone the repository in the buildApk folder
+    git clone --quiet --branch=$TRAVIS_BRANCH  https://$USER_NAME:$GITHUB_API_KEY@github.com/$USER_NAME/nebula-cmd  master > /dev/null
+    cd master
+    pyinstaller -F nebulactl.py
     #add, commit and push files
     git add -f .
     git remote rm origin
