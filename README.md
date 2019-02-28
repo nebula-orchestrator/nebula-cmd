@@ -50,6 +50,7 @@ Commands:
   logout         logout of nebula, useful when you want to make sure to...
   ping           check nebula api responds
   prune          Prune images.
+  reports        List nebula device reports.
 ```
 
 For example the command below will list all Nebula apps:
