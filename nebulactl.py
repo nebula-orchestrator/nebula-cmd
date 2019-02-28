@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.1.0"
+VERSION = "2.2.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -190,6 +190,19 @@ class NebulaCall:
             click.echo(click.style("error updating " + device_group
                                    + ", are you logged in? did you sent the right params & app name?", fg="red"))
 
+    def list_reports(self, page_size, hostname, device_group, report_creation_time_filter, report_creation_time,
+                     last_id):
+        reply = self.connection.list_reports(page_size, hostname, device_group, report_creation_time_filter,
+                                             report_creation_time, last_id)
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, values in list(reply_json.items()):
+                click.echo(str(key) + ":")
+                for value in values:
+                    click.echo(json.dumps(value))
+        else:
+            click.echo(click.style("error listing reports, are you logged in?", fg="red"))
+
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
@@ -219,6 +232,20 @@ def apps():
 @nebulactl.group(help="Manage nebula device_groups.")
 def device_groups():
     pass
+
+
+# command group for everything device_group related
+@nebulactl.command(help="List nebula device reports.")
+@click.option('--page_size', '-p', default=20, type=click.IntRange(1, 1000), help='the number of reports per page')
+@click.option('--hostname', '-h', default=None, help='the hostname to filter reports by')
+@click.option('--device_group', '-d', default=None, help='the device_group to filter reports by')
+@click.option('--report_creation_time_filter', '-f', default="gt", help='the logic of filtering time by')
+@click.option('--report_creation_time', '-r', default=None, help='time since unix epoch to filter by')
+@click.option('--last_id', '-l', default=None, help='last_id of the previous page results')
+def reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time, last_id):
+    connection = NebulaCall()
+    connection.list_reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time,
+                            last_id)
 
 
 # creates a cred file at ~/.nebula.json with the auth credentials or updates it's values if it exists
