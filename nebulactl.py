@@ -199,7 +199,10 @@ class NebulaCall:
             for key, values in list(reply_json.items()):
                 click.echo(str(key) + ":")
                 for value in values:
-                    click.echo(json.dumps(value))
+                    if value == "$oid":
+                        click.echo(json.dumps(values["$oid"]))
+                    else:
+                        click.echo(json.dumps(value))
         else:
             click.echo(click.style("error listing reports, are you logged in?", fg="red"))
 
