@@ -1,9 +1,9 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.0.1"
+VERSION = "2.2.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -16,7 +16,8 @@ class NebulaCall:
             home = expanduser("~")
             auth_file = open(home + "/.nebula.json", "r")
             auth_json = json.load(auth_file)
-            self.connection = Nebula(username=auth_json["username"], password=base64.b64decode(auth_json["password"]),
+            self.connection = Nebula(username=auth_json["username"],
+                                     password=base64.b64decode(auth_json["password"].encode('utf-8')).decode('utf-8'),
                                      host=auth_json["host"], port=auth_json["port"], protocol=auth_json["protocol"])
         except Exception as e:
             click.echo(click.style(e, fg="red"))
@@ -82,7 +83,7 @@ class NebulaCall:
         reply = self.connection.list_app_info(app)
         reply_json = reply["reply"]
         if reply["status_code"] == 200:
-            for key, value in reply_json.items():
+            for key, value in list(reply_json.items()):
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
             click.echo(click.style("error listing " + app
@@ -142,7 +143,7 @@ class NebulaCall:
         reply = self.connection.list_device_group(device_group)
         reply_json = reply["reply"]
         if reply["status_code"] == 200:
-            for key, value in reply_json.items():
+            for key, value in list(reply_json.items()):
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
             click.echo(click.style("error listing device_group :" + device_group
@@ -152,7 +153,7 @@ class NebulaCall:
         reply = self.connection.list_device_groups()
         reply_json = reply["reply"]
         if reply["status_code"] == 200:
-            for key, value in reply_json.items():
+            for key, value in list(reply_json.items()):
                 click.echo(str(key) + ": " + json.dumps(value))
         else:
             click.echo(click.style("error listing device_groups, are you logged in?", fg="red"))
@@ -189,6 +190,22 @@ class NebulaCall:
             click.echo(click.style("error updating " + device_group
                                    + ", are you logged in? did you sent the right params & app name?", fg="red"))
 
+    def list_reports(self, page_size, hostname, device_group, report_creation_time_filter, report_creation_time,
+                     last_id):
+        reply = self.connection.list_reports(page_size, hostname, device_group, report_creation_time_filter,
+                                             report_creation_time, last_id)
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, values in list(reply_json.items()):
+                click.echo(str(key) + ":")
+                for value in values:
+                    if value == "$oid":
+                        click.echo(json.dumps(values["$oid"]))
+                    else:
+                        click.echo(json.dumps(value))
+        else:
+            click.echo(click.style("error listing reports, are you logged in?", fg="red"))
+
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
@@ -220,6 +237,20 @@ def device_groups():
     pass
 
 
+# command group for everything device_group related
+@nebulactl.command(help="List nebula device reports.")
+@click.option('--page_size', '-p', default=20, type=click.IntRange(1, 1000), help='the number of reports per page')
+@click.option('--hostname', '-h', default=None, help='the hostname to filter reports by')
+@click.option('--device_group', '-d', default=None, help='the device_group to filter reports by')
+@click.option('--report_creation_time_filter', '-f', default="gt", help='the logic of filtering time by')
+@click.option('--report_creation_time', '-r', default=None, help='time since unix epoch to filter by')
+@click.option('--last_id', '-l', default=None, help='last_id of the previous page results')
+def reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time, last_id):
+    connection = NebulaCall()
+    connection.list_reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time,
+                            last_id)
+
+
 # creates a cred file at ~/.nebula.json with the auth credentials or updates it's values if it exists
 @nebulactl.command(help="login to nebula")
 @click.option('--username', '-u', prompt='what is nebula manager basic auth username?',
@@ -234,8 +265,8 @@ def device_groups():
 def login(username, password, host, port, protocol):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
-    json.dump({"username": username, "password": base64.b64encode(password), "host": host, "port": port,
-               "protocol": protocol}, auth_file)
+    json.dump({"username": username, "password": base64.b64encode(password.encode('utf-8')).decode('utf-8'),
+               "host": host, "port": port, "protocol": protocol}, auth_file)
     auth_file.write('\n')
 
 
