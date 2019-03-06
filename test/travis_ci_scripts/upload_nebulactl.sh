@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #go to home and setup git
 cd $HOME
 git config --global user.email $USER_EMAIL
