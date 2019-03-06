@@ -7,7 +7,7 @@ git config --global user.name $USER_NAME
 git clone --quiet --branch=$TRAVIS_BRANCH  https://$USER_NAME:$GITHUB_API_KEY@github.com/$USER_NAME/nebula-cmd  master > /dev/null
 
 cd master
-pyinstaller -F nebulactl.py
+pyinstaller -F `pwd`/nebulactl.py
 
 MESSAGE=$(git log -1 HEAD --pretty=format:%s)
 
