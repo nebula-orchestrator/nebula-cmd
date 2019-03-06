@@ -16,6 +16,6 @@ MESSAGE=$(git log -1 HEAD --pretty=format:%s)
 git remote rm origin
 git remote add origin https://$USER_NAME:$GITHUB_API_KEY@github.com/nebula-orchestrator/nebula-cmd.git > /dev/null 2>&1
 git add dist/nebulactl
-git commit -m 'skip travis build $TRAVIS_BUILD_NUMBER pushed - nebulactl.py run and pushed'
+git commit -m '[skip travis] build $TRAVIS_BUILD_NUMBER pushed - nebulactl.py run and pushed'
 git push --quiet --set-upstream origin $TRAVIS_BRANCH
 echo -e "upload run and pushed"
