@@ -13,7 +13,6 @@ install:
 script:
 - sudo sh test/travis_ci_scripts/travis_ci_build_script.sh
 - python -m unittest discover
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: test/travis_ci_scripts/upload_nebulactl.sh
+after_success:
+- chmod +x test/travis_ci_scripts/upload_nebulactl.sh
+- test/travis_ci_scripts/upload_nebulactl.sh
