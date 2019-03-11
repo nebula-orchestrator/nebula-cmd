@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.2.1"
+VERSION = "2.3.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -173,7 +173,7 @@ class NebulaCall:
         if reply["status_code"] == 200:
             click.echo(click.style("deleted device_group " + device_group, fg="red"))
         else:
-            click.echo(click.style("error listing device_group :" + device_group
+            click.echo(click.style("error deleting device_group :" + device_group
                                    + ", are you logged in? did you sent the right device_group name?", fg="red"))
 
     def create_device_group(self, device_group, config):
@@ -195,7 +195,7 @@ class NebulaCall:
         elif reply["status_code"] == 400:
             click.echo(click.style("error updating " + device_group + ", missing or incorrect parameters", fg="red"))
         elif reply["status_code"] == 403:
-            click.echo(click.style("error updating " + device_group + ", device_group already exist", fg="red"))
+            click.echo(click.style("error updating " + device_group + ", device_group does not exist", fg="red"))
         else:
             click.echo(click.style("error updating " + device_group
                                    + ", are you logged in? did you sent the right params & app name?", fg="red"))
@@ -216,19 +216,68 @@ class NebulaCall:
         else:
             click.echo(click.style("error listing reports, are you logged in?", fg="red"))
 
-    # TODO - create unit tests for the user flow
+    def list_users(self):
+        reply = self.connection.list_users()
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in list(reply_json.items()):
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing users, are you logged in?", fg="red"))
 
-    # TODO - list users
+    def list_user(self, user):
+        reply = self.connection.list_user(user)
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in list(reply_json.items()):
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing user :" + user
+                                   + ", are you logged in? did you sent the right user name?", fg="red"))
 
-    # TODO - get user info
+    def delete_user(self, user):
+        reply = self.connection.delete_user(user)
+        if reply["status_code"] == 200:
+            click.echo(click.style("deleted user " + user, fg="red"))
+        else:
+            click.echo(click.style("error deleting user :" + user
+                                   + ", are you logged in? did you sent the right user name?", fg="red"))
 
-    # TODO - delete a user
+    def update_user(self, user, config):
+        reply = self.connection.update_user(user, config)
+        if reply["status_code"] == 200:
+            click.echo(click.style("updating nebula user: " + user, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error updating " + user + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error updating " + user + ", user does not exist", fg="red"))
+        else:
+            click.echo(click.style("error updating " + user
+                                   + ", are you logged in? did you sent the right params & user name?", fg="red"))
 
-    # TODO -  update a user
+    def refresh_user_token(self, user):
+        reply = self.connection.refresh_user_token(user)
+        if reply["status_code"] == 200:
+            click.echo(click.style("updating nebula user token: " + user, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error updating " + user + " token, missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error updating " + user + " token, user does not exist", fg="red"))
+        else:
+            click.echo(click.style("error updating " + user
+                                   + " token, are you logged in? did you sent the right params & user name?", fg="red"))
 
-    # TODO - refresh a user token
-
-    # TODO - create new user
+    def create_user(self, user, config):
+        reply = self.connection.create_user(user, config)
+        if reply["status_code"] == 200:
+            click.echo(click.style("creating nebula user: " + user, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error creating " + user + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error creating " + user + ", user already exist", fg="red"))
+        else:
+            click.echo(click.style("error creating " + user
+                                   + ", are you logged in? did you sent the right params & user name?", fg="red"))
 
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
