@@ -257,8 +257,11 @@ class NebulaCall:
 
     def refresh_user_token(self, user):
         reply = self.connection.refresh_user_token(user)
+        reply_json = reply["reply"]
         if reply["status_code"] == 200:
             click.echo(click.style("updating nebula user token: " + user, fg="green"))
+            for key, value in list(reply_json.items()):
+                click.echo(str(key) + ": " + json.dumps(value))
         elif reply["status_code"] == 400:
             click.echo(click.style("error updating " + user + " token, missing or incorrect parameters", fg="red"))
         elif reply["status_code"] == 403:
@@ -307,6 +310,13 @@ def apps():
 @click.version_option(version=VERSION)
 @nebulactl.group(help="Manage nebula device_groups.")
 def device_groups():
+    pass
+
+
+# command group for everything users related
+@click.version_option(version=VERSION)
+@nebulactl.group(help="Manage nebula users.")
+def users():
     pass
 
 
@@ -571,22 +581,55 @@ def device_group_update(device_group, apps):
     connection.update_device_group(device_group, config_json)
 
 
-# TODO - list users
+@users.command(help="list nebula users", name="list")
+def list_users():
+    connection = NebulaCall()
+    connection.list_users()
 
 
-# TODO - get user info
+@users.command(help="list a user", name="info")
+@click.option('--user', '-u', help='nebula user to get config of',
+              prompt='what is the user name?')
+def user_info(user):
+    connection = NebulaCall()
+    connection.list_user(user)
 
 
-# TODO - delete a user
+@users.command(help="delete a user", name="delete")
+@click.option('--user', '-u', help='nebula user to delete', prompt='what is the user name?')
+@click.confirmation_option(help='auto confirm you want to delete the device_group',
+                           prompt="are you sure you want to delete? there is no restore option")
+def user_delete(user):
+    connection = NebulaCall()
+    connection.delete_user(user)
 
 
-# TODO -  update a user
+@users.command(help="refresh a user token", name="refresh")
+@click.option('--user', '-u', help='nebula user to refresh the token of',
+              prompt='what is the user name?')
+def refresh_user_token(user):
+    connection = NebulaCall()
+    connection.refresh_user_token(user)
 
 
-# TODO - refresh a user token
+@users.command(help="update a new nebula user", name="update")
+@click.option('--user', '-u', help='nebula user to update', prompt='what is the user name?')
+@click.option('--password', '-p', prompt="what are the user password?", help='the user basic auth password')
+@click.option('--token', '-t', prompt="what are the user token?", help='the user bearer token')
+def user_update(user, password, token):
+    config_json = {"password": password, "token": token}
+    connection = NebulaCall()
+    connection.update_user(user, config_json)
 
 
-# TODO - create new user
+@users.command(help="create a new nebula user", name="create")
+@click.option('--user', '-u', help='nebula user to create', prompt='what is the user name?')
+@click.option('--password', '-p', prompt="what are the user password?", help='the user basic auth password')
+@click.option('--token', '-t', prompt="what are the user token?", help='the user bearer token')
+def user_create(user, password, token):
+    config_json = {"password": password, "token": token}
+    connection = NebulaCall()
+    connection.create_user(user, config_json)
 
 
 if __name__ == '__main__':
