@@ -216,6 +216,20 @@ class NebulaCall:
         else:
             click.echo(click.style("error listing reports, are you logged in?", fg="red"))
 
+    # TODO - create unit tests for the user flow
+
+    # TODO - list users
+
+    # TODO - get user info
+
+    # TODO - delete a user
+
+    # TODO -  update a user
+
+    # TODO - refresh a user token
+
+    # TODO - create new user
+
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
@@ -506,6 +520,27 @@ def device_group_update(device_group, apps):
     config_json = {"apps": apps_list}
     connection = NebulaCall()
     connection.update_device_group(device_group, config_json)
+
+
+# TODO - create unit tests for the user flow
+
+
+# TODO - list users
+
+
+# TODO - get user info
+
+
+# TODO - delete a user
+
+
+# TODO -  update a user
+
+
+# TODO - refresh a user token
+
+
+# TODO - create new user
 
 
 if __name__ == '__main__':
