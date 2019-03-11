@@ -571,9 +571,6 @@ def device_group_update(device_group, apps):
     connection.update_device_group(device_group, config_json)
 
 
-# TODO - create unit tests for the user flow
-
-
 # TODO - list users
 
 
