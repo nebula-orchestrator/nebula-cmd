@@ -51,6 +51,7 @@ Commands:
   ping           check nebula api responds
   prune          Prune images.
   reports        List nebula device reports.
+  user-groups    Manage nebula user groups.
   users          Manage nebula users.
 
 ```
