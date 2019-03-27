@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.3.0"
+VERSION = "2.4.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -282,6 +282,57 @@ class NebulaCall:
             click.echo(click.style("error creating " + user
                                    + ", are you logged in? did you sent the right params & user name?", fg="red"))
 
+    def list_user_groups(self):
+        reply = self.connection.list_user_groups()
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in list(reply_json.items()):
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing user groups, are you logged in?", fg="red"))
+
+    def list_user_group(self, user_group):
+        reply = self.connection.list_user_group(user_group)
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in list(reply_json.items()):
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing user group: " + user_group
+                                   + ", are you logged in? did you sent the right user name?", fg="red"))
+
+    def delete_user_group(self, user_group):
+        reply = self.connection.delete_user_group(user_group)
+        if reply["status_code"] == 200:
+            click.echo(click.style("deleted user group " + user_group, fg="red"))
+        else:
+            click.echo(click.style("error deleting user group: " + user_group
+                                   + ", are you logged in? did you sent the right user name?", fg="red"))
+
+    def update_user_group(self, user_group, config):
+        reply = self.connection.update_user_group(user_group, config)
+        if reply["status_code"] == 200:
+            click.echo(click.style("updating nebula user group: " + user_group, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error updating " + user_group + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error updating " + user_group + ", user does not exist", fg="red"))
+        else:
+            click.echo(click.style("error updating " + user_group
+                                   + ", are you logged in? did you sent the right params & user name?", fg="red"))
+
+    def create_user_group(self, user_group, config):
+        reply = self.connection.create_user_group(user_group, config)
+        if reply["status_code"] == 200:
+            click.echo(click.style("creating nebula user group: " + user_group, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error creating " + user_group + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error creating " + user_group + ", user already exist", fg="red"))
+        else:
+            click.echo(click.style("error creating " + user_group
+                                   + ", are you logged in? did you sent the right params & user name?", fg="red"))
+
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
 # things, meaning help text, arguments input, arguments prompts & login file interfacing
@@ -317,6 +368,13 @@ def device_groups():
 @click.version_option(version=VERSION)
 @nebulactl.group(help="Manage nebula users.")
 def users():
+    pass
+
+
+# command group for everything user groups related
+@click.version_option(version=VERSION)
+@nebulactl.group(help="Manage nebula user groups.")
+def user_groups():
     pass
 
 
@@ -597,7 +655,7 @@ def user_info(user):
 
 @users.command(help="delete a user", name="delete")
 @click.option('--user', '-u', help='nebula user to delete', prompt='what is the user name?')
-@click.confirmation_option(help='auto confirm you want to delete the device_group',
+@click.confirmation_option(help='auto confirm you want to delete the user',
                            prompt="are you sure you want to delete? there is no restore option")
 def user_delete(user):
     connection = NebulaCall()
@@ -630,6 +688,77 @@ def user_create(user, password, token):
     config_json = {"password": password, "token": token}
     connection = NebulaCall()
     connection.create_user(user, config_json)
+
+
+@user_groups.command(help="list nebula user groups", name="list")
+def list_user_groups():
+    connection = NebulaCall()
+    connection.list_user_groups()
+
+
+@user_groups.command(help="list a user group", name="info")
+@click.option('--group', '-g', help='nebula user group to get config of', prompt='what is the user group name?')
+def user_group_info(group):
+    connection = NebulaCall()
+    connection.list_user_group(group)
+
+
+@user_groups.command(help="delete a user group", name="delete")
+@click.option('--group', '-g', help='nebula user group to delete', prompt='what is the user group name?')
+@click.confirmation_option(help='auto confirm you want to delete the user group',
+                           prompt="are you sure you want to delete? there is no restore option")
+def user_group_delete(group):
+    connection = NebulaCall()
+    connection.delete_user_group(group)
+
+
+@user_groups.command(help="update a new nebula user group", name="update")
+@click.option('--group', '-g', help='nebula user to create', prompt='what is the user name?')
+@click.option('--members', '-m', help='nebula user group members, defaults to [] (none/empty)')
+@click.option('--pruning/--no-pruning', '-P/-N', help='image prunning allowed\not allowed')
+@click.option('--admin/--user', '-A/-U', help='are group members considered admins')
+@click.option('--apps', '-a',help='what apps will group member have access and what access type? {} (none/empty)')
+@click.option('--device_group', '-d',
+              help='what device_groups will group member have access and what access type? {} (none/empty)')
+def user_group_update(group, members, pruning, admin, apps, device_group):
+    config_json = {}
+    if members is not None:
+        config_json["group_members"]: members
+    if pruning is not None:
+        config_json["pruning_allowed"]: pruning
+    if apps is not None:
+        config_json["apps"]: apps
+    if device_group is not None:
+        config_json["device_groups"]: device_group
+    if admin is not None:
+        config_json["admin"]: admin
+    connection = NebulaCall()
+    connection.create_user_group(group, config_json)
+
+
+@user_groups.command(help="create a new nebula user group", name="create")
+@click.option('--group', '-g', help='nebula user to create', prompt='what is the user name?')
+@click.option('--members', '-m', default=[], prompt="who are the group_members?",
+              help='nebula user group members, defaults to [] (none/empty)')
+@click.option('--pruning/--no-pruning', '-P/-N', default=False, help='image prunning allowed\not allowed',
+              prompt="should user group allow pruning of images? defaults to not allowed")
+@click.option('--admin/--user', '-A/-U', default=False, help='are group members considered admins',
+              prompt="are group members considered admins or users? defaults to users")
+@click.option('--apps', '-a', default={}, prompt="what apps will group member have access and what access type?",
+              help='what apps will group member have access and what access type? {} (none/empty)')
+@click.option('--device_group', '-d', default={},
+              prompt="what device_groups will group member have access and what access type?",
+              help='what device_groups will group member have access and what access type? {} (none/empty)')
+def user_group_create(group, members, pruning, admin, apps, device_group):
+    config_json = {
+        "group_members": members,
+        "pruning_allowed": pruning,
+        "apps": apps,
+        "device_groups": device_group,
+        "admin": admin
+    }
+    connection = NebulaCall()
+    connection.create_user_group(group, config_json)
 
 
 if __name__ == '__main__':
