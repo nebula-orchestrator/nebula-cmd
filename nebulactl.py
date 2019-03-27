@@ -717,7 +717,7 @@ def user_group_delete(group):
 @click.option('--members', '-m', help='nebula user group members, defaults to [] (none/empty)')
 @click.option('--pruning/--no-pruning', '-P/-N', help='image prunning allowed\not allowed')
 @click.option('--admin/--user', '-A/-U', help='are group members considered admins')
-@click.option('--apps', '-a',help='what apps will group member have access and what access type? {} (none/empty)')
+@click.option('--apps', '-a', help='what apps will group member have access and what access type? {} (none/empty)')
 @click.option('--device_group', '-d',
               help='what device_groups will group member have access and what access type? {} (none/empty)')
 def user_group_update(group, members, pruning, admin, apps, device_group):
