@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.4.0"
+VERSION = "2.5.0a"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -332,6 +332,16 @@ class NebulaCall:
         else:
             click.echo(click.style("error creating " + user_group
                                    + ", are you logged in? did you sent the right params & user name?", fg="red"))
+
+    # TODO - create cron_job
+
+    # TODO - update cron_job
+
+    # TODO - list cron_job
+
+    # TODO - list all cron_jobs
+
+    # TODO - delete cron_job
 
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
@@ -759,6 +769,21 @@ def user_group_create(group, members, pruning, admin, apps, device_group):
     }
     connection = NebulaCall()
     connection.create_user_group(group, config_json)
+
+
+# TODO - create cron_job
+
+
+# TODO - update cron_job
+
+
+# TODO - list cron_job
+
+
+# TODO - list all cron_jobs
+
+
+# TODO - delete cron_job
 
 
 if __name__ == '__main__':
