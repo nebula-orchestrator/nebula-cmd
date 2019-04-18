@@ -388,6 +388,13 @@ def user_groups():
     pass
 
 
+# command group for everything cron jobs related
+@click.version_option(version=VERSION)
+@nebulactl.group(help="Manage nebula cron jobs.")
+def cron_jobs():
+    pass
+
+
 # command group for everything device_group related
 @nebulactl.command(help="List nebula device reports.")
 @click.option('--page_size', '-p', default=20, type=click.IntRange(1, 1000), help='the number of reports per page')
