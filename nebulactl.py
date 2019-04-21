@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.5.0a"
+VERSION = "2.5.0"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -333,15 +333,58 @@ class NebulaCall:
             click.echo(click.style("error creating " + user_group
                                    + ", are you logged in? did you sent the right params & user name?", fg="red"))
 
-    # TODO - create cron_job
+    def create_cron_job(self, cron_job, config):
+        reply = self.connection.create_cron_job(cron_job, config)
+        if reply["status_code"] == 200:
+            click.echo(click.style("creating nebula cron_job: " + cron_job, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error creating " + cron_job + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error creating " + cron_job + ", cron_job already exist", fg="red"))
+        else:
+            click.echo(click.style("error creating " + cron_job
+                                   + ", are you logged in? did you sent the right params & cron_job name?", fg="red"))
 
-    # TODO - update cron_job
+    def update_cron_job(self, cron_job, config):
+        reply = self.connection.update_cron_job(cron_job, config)
+        if reply["status_code"] == 200:
+            click.echo(click.style("updating nebula cron_job: " + cron_job, fg="green"))
+        elif reply["status_code"] == 400:
+            click.echo(click.style("error updating " + cron_job + ", missing or incorrect parameters", fg="red"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error updating " + cron_job + ", cron_job does not exist", fg="red"))
+        else:
+            click.echo(click.style("error updating " + cron_job
+                                   + ", are you logged in? did you sent the right params & cron_job name?", fg="red"))
 
-    # TODO - list cron_job
+    def list_cron_jobs(self):
+        reply = self.connection.list_cron_jobs()
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in list(reply_json.items()):
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing cron_jobs, are you logged in?", fg="red"))
 
-    # TODO - list all cron_jobs
+    def list_cron_job_info(self, cron_job):
+        reply = self.connection.list_cron_job_info(cron_job)
+        reply_json = reply["reply"]
+        if reply["status_code"] == 200:
+            for key, value in list(reply_json.items()):
+                click.echo(str(key) + ": " + json.dumps(value))
+        else:
+            click.echo(click.style("error listing " + cron_job
+                                   + " info, are you logged in? did you sent the right cron_job name?", fg="red"))
 
-    # TODO - delete cron_job
+    def delete_cron_job(self, cron_job):
+        reply = self.connection.delete_cron_job(cron_job)
+        if reply["status_code"] == 200:
+            click.echo(click.style("deleting nebula cron_job: " + cron_job, fg="magenta"))
+        elif reply["status_code"] == 403:
+            click.echo(click.style("error deleting " + cron_job + ", app doesn't exist", fg="red"))
+        else:
+            click.echo(click.style("error deleting " + cron_job
+                                   + ", are you logged in? did you sent the right cron_job name?", fg="red"))
 
 
 # the 2nd part of nebulactl.py, the click functions from here until the end of the file are in charge of the CLI side of
@@ -638,9 +681,11 @@ def device_group_delete(device_group):
 @click.option('--device_group', '-d', help='nebula device_group to create', prompt='what is the device_group name?')
 @click.option('--apps', '-a', prompt="what are the device_group apps?",
               help='a CSV list of the apps that are part of the device_group')
-def device_group_create(device_group, apps):
+@click.option('--cron_jobs', '-c', prompt="what are the device_group cron_jobs?",
+              help='a CSV list of the cron_jobs that are part of the device_group')
+def device_group_create(device_group, apps, cron_jobs):
     apps_list = apps.split(",")
-    config_json = {"apps": apps_list}
+    config_json = {"apps": apps_list, "cron_jobs": cron_jobs}
     connection = NebulaCall()
     connection.create_device_group(device_group, config_json)
 
@@ -649,9 +694,15 @@ def device_group_create(device_group, apps):
 @click.option('--device_group', '-d', help='nebula device_group to update', prompt='what is the device_group name?')
 @click.option('--apps', '-a', prompt="what are the device_group apps?",
               help='a CSV list of the apps that are part of the device_group')
-def device_group_update(device_group, apps):
-    apps_list = apps.split(",")
-    config_json = {"apps": apps_list}
+@click.option('--cron_jobs', '-c', help='a CSV list of the cron_jobs that are part of the device_group')
+def device_group_update(device_group, apps=None, cron_jobs=None):
+    config_json = {}
+    if apps is not None:
+        apps_list = apps.split(",")
+        config_json["apps"] = apps_list
+    if cron_jobs is not None:
+        cron_jobs_list = cron_jobs.split(",")
+        config_json["cron_jobs"] = cron_jobs_list
     connection = NebulaCall()
     connection.update_device_group(device_group, config_json)
 
@@ -778,19 +829,111 @@ def user_group_create(group, members, pruning, admin, apps, device_group):
     connection.create_user_group(group, config_json)
 
 
-# TODO - create cron_job
+# create requires all the params so prompting for everything that missing with sensible\empty defaults where possible
+@cron_jobs.command(help="create a new nebula cron_jobs", name="create")
+@click.option('--cron_job', '-c', help='nebula cron_job name to create',
+              prompt='what is nebula cron_job name to create?')
+@click.option('--schedule', '-t', help='nebula cron_job schedule to create',
+              prompt='what is nebula cron_job schedule to create?')
+@click.option('--env_vars', '-e', help='nebula cron_job envvars in the format of key:value,key1:value1... defaults to '
+                                       'none',
+              prompt="what are the app envvars?")
+@click.option('--image', '-i', help='nebula cron_job docker image', prompt="what is the cron_job docker image?")
+@click.option('--running/--stopped', '-r/-s', default=True, help='nebula cron_job running/stopped state, defaults to '
+                                                                 'True',
+              prompt="should the cron_job start in the running state?")
+@click.option('--networks', '-n', default="", prompt="what is the cron_job networks?",
+              help='nebula cron_job network mode in csv format, defaults to [] ("nebula")')
+@click.option('--volumes', '-v', default=[], prompt="what is the cron_job volume mounts?",
+              help='nebula cron_job volume mounts in csv format, defaults to [] (none/empty)')
+@click.option('--devices', '-d', default=[], prompt="what is the cron_job devices mounts?",
+              help='nebula cron_job devices mounts in csv format, defaults to [] (none/empty)')
+@click.option('--privileged/--unprivileged', '-P/-U', default=False,
+              help='nebula cron_job privileged state, defaults to False',
+              prompt="should the app start with privileged permissions?")
+def create_cron_jobs(cron_job, schedule, env_vars, image, running, networks, volumes, devices, privileged, rolling):
+    if volumes is not []:
+        volumes = volumes.split(",")
+    if networks is not []:
+        networks = networks.split(",")
+    env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
+    config_json = {"schedule": schedule, "env_vars": dict(env_vars), "docker_image": str(image),
+                   "running": bool(running), "networks": networks, "volumes": volumes, "devices": devices,
+                   "privileged": bool(privileged), "rolling_restart": bool(rolling)}
+    connection = NebulaCall()
+    connection.create_cron_job(cron_job, config_json)
 
 
-# TODO - update cron_job
+# update can be any combination of params, only one that's 100% required is the --cron_job
+@cron_jobs.command(help="update a nebula cron_job", name="update")
+@click.option('--cron_job', '-c', prompt='what is nebula cron_job name to update?',
+              help='nebula cron_job name to update')
+@click.option('--schedule', '-t', help='cron schedule to run the cron_job at ')
+@click.option('--env_vars', '-e', help='nebula cron_job envvars in the format of key:value,key1:value1...')
+@click.option('--image', '-i', help='nebula cron_job docker image')
+@click.option('--running/--stopped', '-r/-s', help='nebula cron_job running/stopped state')
+@click.option('--networks', '-n', help='nebula cron_job network mode in csv format')
+@click.option('--volumes', '-v', help='nebula cron_job volume mounts in csv format')
+@click.option('--devices', '-d', help='nebula cron_job devices mounts in csv format, defaults to [] (none/empty)')
+@click.option('--privileged/--unprivileged', '-P/-U', help='nebula cron_job privileged state, defaults to False')
+def update_cron_job(cron_job, schedule, env_vars, image, running, networks, volumes, devices, privileged):
+    config_json = {}
+    if schedule is not None:
+        config_json["schedule"] = schedule
+    if env_vars is not None:
+        env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
+        config_json["env_vars"] = dict(env_vars)
+    if image is not None:
+        config_json["docker_image"] = str(image)
+    if running is not None:
+        config_json["running"] = bool(running)
+    if networks is not None:
+        if networks != '[]':
+            networks = networks.split(",")
+            config_json["networks"] = networks
+        elif networks == '[]':
+            config_json["networks"] = []
+    if devices is not None:
+        if devices != '[]':
+            devices = devices.split(",")
+            config_json["devices"] = devices
+        elif devices == '[]':
+            config_json["devices"] = []
+    if privileged is not None:
+        config_json["privileged"] = bool(privileged)
+    if volumes is not None:
+        if volumes != '[]':
+            volumes = volumes.split(",")
+            config_json["volumes"] = volumes
+        elif volumes == '[]':
+            config_json["volumes"] = []
+
+    connection = NebulaCall()
+    connection.update_cron_job(cron_job, config_json)
 
 
-# TODO - list cron_job
+@cron_jobs.command(help="list nebula cron_jobs", name="list")
+def list_cron_jobs():
+    connection = NebulaCall()
+    connection.list_cron_jobs()
 
 
-# TODO - list all cron_jobs
+@cron_jobs.command(help="delete a nebula cron_jobs", name="delete")
+@click.option('--cron_job', '-c', prompt='what is nebula cron_job name to delete?',
+              help='nebula cron_job name to delete')
+@click.confirmation_option(help='auto confirm you want to delete the cron_jobs',
+                           prompt="are you sure you want to delete? there is no restore option")
+def delete_cron_job(cron_job):
+    connection = NebulaCall()
+    connection.delete_app(cron_job)
 
 
-# TODO - delete cron_job
+@cron_jobs.command(help="list info of a nebula cron_job", name="info")
+@click.option('--cron_job', '-c', prompt='what is nebula cron_jobs name to get info of?',
+              help='nebula cron_job name to get info of')
+def list_cron_job(cron_job):
+    connection = NebulaCall()
+    connection.list_cron_job_info(cron_job)
 
 
 if __name__ == '__main__':
