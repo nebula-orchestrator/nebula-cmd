@@ -10,9 +10,11 @@ env:
   - secure: 2LqFFVKGssy06yFZh7LGZ5f1ji5R9QW7i65ldY+nXU5hvilLJrF6i2/19Z7wqChdQCHDEl1R87XLOcWd1xcCoXiR9XiR29LjTL+VsRbgHcIjQZPXr/UChb9HOB42wikS+YG/afETC10M7VKaZhoWR85W8SVe1f5IkL1kKZaf8zRQQfYccj2ZtEfUQLaLQ6Qc5xmavJY/bzOhWWSQf1FRvO3qqIex/vyAH1gZdZ35MRToDFkx6YdCuMErubZ4FVJ7VmCHzl3kf3N5tYXsSTR2Sbf/StpSDCu+hBnE/pNpdHk9RJNcwOdsXXi3PKo1Xmjl7NgKVoUR9tmX2M8ypMDEjEedx+7rXr9vVPm9ovhuKVA9Goh8z/2OKamPX6d6H2aoZNEhGjx7iwM/d2xaAbJQsSt7Jxnm5Lug29dN3EY7uXBSHbf5/7mEdbBnYwObTMpVtHi7nx3hcXGdJfRmXaVpqyCUvYbSW6XEgkRD7QJNVO3sQCi6Oj3R6qqBaI5n1rHUoJzt1jX6Fi76YQbrgnIlhbevTPXL8z+LuBUsWfZhbjR5H7aL0nXUHVzhX393fPyKGr3XdJpzHFBMEbT8lWiY7K/r9lFJhg23wp1xMKvli+1L3pMWqfXi026DjIzbXVdCGqBy2lSlZQiLqT8lEyQlhhH6pREV1z1W0CIIVD53RFM=
 install:
 - pip install -r requirements.txt
+- pip install codecov
 script:
 - sudo sh test/travis_ci_scripts/travis_ci_build_script.sh
-- python -m unittest discover
+- coverage run -m unittest
 after_success:
 - chmod +x test/travis_ci_scripts/upload_nebulactl.sh
 - test/travis_ci_scripts/upload_nebulactl.sh
+- codecov
