@@ -26,9 +26,10 @@ after_success:
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 - git config --local user.name "${GITHUB_USER}"
 - git config --local user.email "${GITHUB_USER_EMAIL}"
+- git pull
 - git commit -m '[skip travis] build ${TRAVIS_BUILD_NUMBER} pushed - new ${GITHUB_PROJECT} version released'
-- git tag $(dist/nebulactl --version)
-- git push origin $(dist/nebulactl --version)
+- git tag $(dist/nebulactl --version | awk -F"version" '{print $2}')
+- git push origin $(dist/nebulactl --version | awk -F"version" '{print $2}')
 - docker run -e GITHUB_USER=nebula-orchestrator -e GITHUB_PROJECT=${GITHUB_PROJECT} -e CHANGELOG_GITHUB_TOKEN=${GH_TOKEN} -v `pwd`:/output naorlivne/github-changelog-generator-dockerized
 - git add CHANGELOG.md
 - git commit -m '[skip travis] build ${TRAVIS_BUILD_NUMBER} pushed - new version changelog'
