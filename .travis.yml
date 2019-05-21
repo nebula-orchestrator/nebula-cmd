@@ -22,7 +22,6 @@ after_success:
 - chmod +x test/travis_ci_scripts/upload_nebulactl.sh
 - test/travis_ci_scripts/upload_nebulactl.sh
 - codecov
-after_deploy:
 - git config credential.helper "store --file=.git/credentials"
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 - git config --local user.name "${GITHUB_USER}"
