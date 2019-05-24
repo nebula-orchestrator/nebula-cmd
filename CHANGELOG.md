@@ -33,7 +33,6 @@
 **Merged pull requests:**
 
 - Feature: add upload script/updating yml [\#18](https://github.com/nebula-orchestrator/nebula-cmd/pull/18) ([jakobpederson](https://github.com/jakobpederson))
-- Update contributors [\#10](https://github.com/nebula-orchestrator/nebula-cmd/pull/10) ([jakobpederson](https://github.com/jakobpederson))
 
 ## [2.2.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.2.0) (2019-02-28)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.1.0...2.2.0)
@@ -60,6 +59,7 @@
 
 **Merged pull requests:**
 
+- Update contributors [\#10](https://github.com/nebula-orchestrator/nebula-cmd/pull/10) ([jakobpederson](https://github.com/jakobpederson))
 - Travis ci [\#9](https://github.com/nebula-orchestrator/nebula-cmd/pull/9) ([jakobpederson](https://github.com/jakobpederson))
 
 ## [1.5.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/1.5.0) (2018-10-11)
