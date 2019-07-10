@@ -17,10 +17,6 @@
 - Bump requests from 2.21.0 to 2.22.0 [\#22](https://github.com/nebula-orchestrator/nebula-cmd/pull/22) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.24.2 to 1.25.2 [\#21](https://github.com/nebula-orchestrator/nebula-cmd/pull/21) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
-**Merged pull requests:**
-
-- 2.0.0a [\#14](https://github.com/nebula-orchestrator/nebula-cmd/pull/14) ([naorlivne](https://github.com/naorlivne))
-
 ## [2.5.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.5.0) (2019-04-21)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.4.0...2.5.0)
 
@@ -53,6 +49,10 @@
 
 ## [2.0.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.0.0) (2019-01-14)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/1.6.0...2.0.0)
+
+**Merged pull requests:**
+
+- 2.0.0a [\#14](https://github.com/nebula-orchestrator/nebula-cmd/pull/14) ([naorlivne](https://github.com/naorlivne))
 
 ## [1.6.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/1.6.0) (2018-12-06)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/1.5.0...1.6.0)
