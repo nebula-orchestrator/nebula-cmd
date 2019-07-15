@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.6.1"
+VERSION = "2.6.2"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -201,9 +201,9 @@ class NebulaCall:
                                    + ", are you logged in? did you sent the right params & app name?", fg="red"))
 
     def list_reports(self, page_size, hostname, device_group, report_creation_time_filter, report_creation_time,
-                     last_id):
+                     last_id, updated):
         reply = self.connection.list_reports(page_size, hostname, device_group, report_creation_time_filter,
-                                             report_creation_time, last_id)
+                                             report_creation_time, last_id, updated)
         reply_json = reply["reply"]
         if reply["status_code"] == 200:
             for key, values in list(reply_json.items()):
@@ -446,10 +446,13 @@ def cron_jobs():
 @click.option('--report_creation_time_filter', '-f', default="gt", help='the logic of filtering time by')
 @click.option('--report_creation_time', '-r', default=None, help='time since unix epoch to filter by')
 @click.option('--last_id', '-l', default=None, help='last_id of the previous page results')
-def reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time, last_id):
+@click.option('--updated', '-u', default=None, help='if True returns only reports where the device configuration was '
+                                                    'updated, if false returns only reports when then device '
+                                                    'configuration was not updated and if not set returns all reports')
+def reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time, last_id, updated):
     connection = NebulaCall()
     connection.list_reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time,
-                            last_id)
+                            last_id, updated)
 
 
 # creates a cred file at ~/.nebula.json with the auth credentials or updates it's values if it exists

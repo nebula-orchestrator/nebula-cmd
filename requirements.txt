@@ -6,7 +6,7 @@ dis3==0.1.3
 future==0.17.1
 idna==2.8
 macholib==1.11
-NebulaPythonSDK==2.6.1
+NebulaPythonSDK==2.6.2
 pefile==2019.4.18
 PyInstaller==3.5
 requests==2.22.0
