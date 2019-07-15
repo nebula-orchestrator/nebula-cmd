@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/nebula-orchestrator/nebula-cmd/tree/HEAD)
-
-[Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.6.1...HEAD)
+## [2.6.2](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.6.2) (2019-07-15)
+[Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.6.1...2.6.2)
 
 **Implemented enhancements:**
 
