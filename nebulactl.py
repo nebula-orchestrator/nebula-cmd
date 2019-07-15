@@ -447,7 +447,7 @@ def cron_jobs():
 @click.option('--report_creation_time', '-r', default=None, help='time since unix epoch to filter by')
 @click.option('--last_id', '-l', default=None, help='last_id of the previous page results')
 @click.option('--updated', '-u', default=None, help='if True returns only reports where the device configuration was '
-                                                    'updated, if false returns only reports when then device '
+                                                    'updated, if False returns only reports when then device '
                                                     'configuration was not updated and if not set returns all reports')
 def reports(page_size, hostname, device_group, report_creation_time_filter, report_creation_time, last_id, updated):
     connection = NebulaCall()
