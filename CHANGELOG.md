@@ -1,5 +1,8 @@
 # Change Log
 
+## [2.7.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.7.0) (2019-08-28)
+[Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.6.2...2.7.0)
+
 ## [2.6.2](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.6.2) (2019-07-15)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.6.1...2.6.2)
 
