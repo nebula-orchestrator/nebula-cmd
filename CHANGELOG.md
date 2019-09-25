@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Bump urllib3 from 1.25.5 to 1.25.6 [\#31](https://github.com/nebula-orchestrator/nebula-cmd/pull/31) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.25.3 to 1.25.5 [\#30](https://github.com/nebula-orchestrator/nebula-cmd/pull/30) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [2.7.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.7.0) (2019-08-28)
@@ -14,15 +15,17 @@
 ## [2.6.2](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.6.2) (2019-07-15)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.6.1...2.6.2)
 
+**Implemented enhancements:**
+
+- Bump urllib3 from 1.25.2 to 1.25.3 [\#24](https://github.com/nebula-orchestrator/nebula-cmd/pull/24) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [2.6.1](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.6.1) (2019-05-21)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.5.0...2.6.1)
 
 **Implemented enhancements:**
 
-- Bump urllib3 from 1.25.2 to 1.25.3 [\#24](https://github.com/nebula-orchestrator/nebula-cmd/pull/24) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump nebulapythonsdk from 2.5.1 to 2.5.2 [\#23](https://github.com/nebula-orchestrator/nebula-cmd/pull/23) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump requests from 2.21.0 to 2.22.0 [\#22](https://github.com/nebula-orchestrator/nebula-cmd/pull/22) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump urllib3 from 1.24.2 to 1.25.2 [\#21](https://github.com/nebula-orchestrator/nebula-cmd/pull/21) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [2.5.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.5.0) (2019-04-21)
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.4.0...2.5.0)
@@ -36,6 +39,7 @@
 **Implemented enhancements:**
 
 - Autobuild CLI binary [\#5](https://github.com/nebula-orchestrator/nebula-cmd/issues/5)
+- Bump urllib3 from 1.24.2 to 1.25.2 [\#21](https://github.com/nebula-orchestrator/nebula-cmd/pull/21) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 **Merged pull requests:**
 
