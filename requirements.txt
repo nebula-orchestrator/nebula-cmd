@@ -3,7 +3,7 @@ certifi==2019.9.11
 chardet==3.0.4
 Click==7.0
 dis3==0.1.3
-future==0.18.1
+future==0.18.2
 idna==2.8
 macholib==1.11
 NebulaPythonSDK==2.7.0
