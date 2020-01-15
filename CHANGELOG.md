@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Bump altgraph from 0.16.1 to 0.17 [\#41](https://github.com/nebula-orchestrator/nebula-cmd/pull/41) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump six from 1.12.0 to 1.13.0 [\#35](https://github.com/nebula-orchestrator/nebula-cmd/pull/35) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump future from 0.18.1 to 0.18.2 [\#34](https://github.com/nebula-orchestrator/nebula-cmd/pull/34) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump future from 0.18.0 to 0.18.1 [\#33](https://github.com/nebula-orchestrator/nebula-cmd/pull/33) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
