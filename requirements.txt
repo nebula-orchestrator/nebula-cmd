@@ -1,4 +1,4 @@
-altgraph==0.16.1
+altgraph==0.17
 certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
