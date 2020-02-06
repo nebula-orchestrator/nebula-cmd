@@ -3,7 +3,7 @@ import click, json, ast, os, base64
 from NebulaPythonSDK import Nebula
 from os.path import expanduser
 
-VERSION = "2.7.0"
+VERSION = "2.7.1"
 
 
 # i'm separating the nebulactl.py to 2 parts, the first is the NebulaCall class below which is going to be in charge of
@@ -524,14 +524,14 @@ def create_app(app, starting_ports, containers_per, env_vars, image, running, ne
     starting_ports = starting_ports.split(",")
     ports_list = []
     for ports in starting_ports:
-        ports = ports.split(":")
-        ports_dict = {str(ports[0]): str(ports[1])}
+        host_port, container_port = ports.split(":")
+        ports_dict = {str(host_port): str(container_port)}
         ports_list.append(ports_dict)
     containers_per = str(containers_per).split(":")
     containers_per_dict = {containers_per[0]: int(containers_per[1])}
-    if volumes is not []:
+    if len(volumes) != 0:
         volumes = volumes.split(",")
-    if networks is not []:
+    if len(volumes) != 0:
         networks = networks.split(",")
     env_vars = ast.literal_eval("{\"" + env_vars.replace(":", "\":\"").replace(",", "\",\"") + "\"}")
     config_json = {"starting_ports": ports_list, "containers_per": containers_per_dict,
