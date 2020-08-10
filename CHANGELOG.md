@@ -9,6 +9,10 @@
 - Bump requests from 2.23.0 to 2.24.0 [\#52](https://github.com/nebula-orchestrator/nebula-cmd/pull/52) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.25.8 to 1.25.9 [\#48](https://github.com/nebula-orchestrator/nebula-cmd/pull/48) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
+**Fixed bugs:**
+
+- Setuptools error on running nebulactl [\#56](https://github.com/nebula-orchestrator/nebula-cmd/issues/56)
+
 ## [2.7.1](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.7.1) (2020-02-06)
 
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.7.0...2.7.1)
