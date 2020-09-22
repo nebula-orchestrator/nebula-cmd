@@ -8,6 +8,7 @@
 
 - Bump nebulapythonsdk from 2.7.0 to 2.8.0 [\#58](https://github.com/nebula-orchestrator/nebula-cmd/pull/58) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump requests from 2.23.0 to 2.24.0 [\#52](https://github.com/nebula-orchestrator/nebula-cmd/pull/52) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump urllib3 from 1.25.8 to 1.25.9 [\#48](https://github.com/nebula-orchestrator/nebula-cmd/pull/48) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 **Fixed bugs:**
 
@@ -19,7 +20,6 @@
 
 **Implemented enhancements:**
 
-- Bump urllib3 from 1.25.8 to 1.25.9 [\#48](https://github.com/nebula-orchestrator/nebula-cmd/pull/48) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump six from 1.13.0 to 1.14.0 [\#42](https://github.com/nebula-orchestrator/nebula-cmd/pull/42) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump altgraph from 0.16.1 to 0.17 [\#41](https://github.com/nebula-orchestrator/nebula-cmd/pull/41) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump six from 1.12.0 to 1.13.0 [\#35](https://github.com/nebula-orchestrator/nebula-cmd/pull/35) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
