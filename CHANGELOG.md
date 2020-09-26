@@ -12,6 +12,7 @@
 
 **Fixed bugs:**
 
+- Dependabot couldn't authenticate with https://pypi.python.org/simple/ [\#60](https://github.com/nebula-orchestrator/nebula-cmd/issues/60)
 - Setuptools error on running nebulactl [\#56](https://github.com/nebula-orchestrator/nebula-cmd/issues/56)
 
 ## [2.7.1](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.7.1) (2020-02-06)
