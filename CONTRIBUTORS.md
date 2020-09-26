@@ -16,3 +16,7 @@ Nebula contributors
 * **[Jakob Pederson](https://github.com/jakobpederson)**
 
   * Travis CI
+
+* **[Viney Yadav](https://github.com/vineyyadav)**
+
+  * Fix for #59
