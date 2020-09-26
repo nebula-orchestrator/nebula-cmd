@@ -15,6 +15,14 @@
 - Dependabot couldn't authenticate with https://pypi.python.org/simple/ [\#60](https://github.com/nebula-orchestrator/nebula-cmd/issues/60)
 - Setuptools error on running nebulactl [\#56](https://github.com/nebula-orchestrator/nebula-cmd/issues/56)
 
+**Closed issues:**
+
+- Add support for  host\_uri argument  [\#59](https://github.com/nebula-orchestrator/nebula-cmd/issues/59)
+
+**Merged pull requests:**
+
+- Added support for host\_uri argument  [\#62](https://github.com/nebula-orchestrator/nebula-cmd/pull/62) ([vineyyadav](https://github.com/vineyyadav))
+
 ## [2.7.1](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.7.1) (2020-02-06)
 
 [Full Changelog](https://github.com/nebula-orchestrator/nebula-cmd/compare/2.7.0...2.7.1)
