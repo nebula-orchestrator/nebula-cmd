@@ -28,7 +28,8 @@ class NebulaCall:
             else:
                 nebula_token = base64.b64decode(auth_json["token"].encode('utf-8')).decode('utf-8')
             self.connection = Nebula(username=auth_json["username"],  host=auth_json["host"], port=auth_json["port"],
-                                     token=nebula_token, password=nebula_pass, protocol=auth_json["protocol"])
+                                     token=nebula_token, password=nebula_pass, protocol=auth_json["protocol"], 
+                                     host_uri=auth_json["host_uri"])
         except Exception as e:
             click.echo(click.style(e, fg="red"))
             click.echo(click.style("error reading ~/nebula.json auth file, try logging in first", fg="red"))
@@ -458,22 +459,24 @@ def reports(page_size, hostname, device_group, report_creation_time_filter, repo
 # creates a cred file at ~/.nebula.json with the auth credentials or updates it's values if it exists
 @nebulactl.command(help="login to nebula")
 @click.option('--username', '-u', prompt='what is nebula manager basic auth username?',
-              help='nebula manager basic auth username', default="")
+              help='nebula manager basic auth username. Optional if token provided', default="")
 @click.option('--password', '-p', prompt='what is nebula manager basic auth password?', hide_input=True,
-              confirmation_prompt=True, help='nebula manager basic auth password', default="")
+              confirmation_prompt=True, help='nebula manager basic auth password. Optional if token provided', default="")
 @click.option('--token', '-t', prompt='what is nebula manager auth token?', hide_input=True,
-              confirmation_prompt=True, help='nebula manager auth token', default="")
-@click.option('--host', '-h', prompt='what is nebula manager host?', help='nebula manager host.')
+              confirmation_prompt=True, help='nebula manager auth token. Optional if username and password provided', default="")
+@click.option('--host', '-h', prompt='what is nebula manager host?', help='nebula manager host. Optional if host_uri provided', default="")
 @click.option('--port', '-c', prompt='what is nebula manager port?', help='nebula manager port, defaults to 80',
               default=80, type=click.IntRange(1, 65535))
 @click.option('--protocol', '-P', prompt='what is nebula manager protocol?', default="http",
               help='nebula manager protocol, defaults to http')
-def login(username, password, token, host, port, protocol):
+@click.option('--host_uri', '-U', prompt='what is nebula manager URI?', default="",
+              help='nebula manager complete URI, including protocol, host, port and path. Optional if host provided')
+def login(username, password, token, host, port, protocol, host_uri):
     home = expanduser("~")
     auth_file = open(home + "/.nebula.json", "w+")
     json.dump({"username": username, "password": base64.b64encode(password.encode('utf-8')).decode('utf-8'),
                "token": base64.b64encode(token.encode('utf-8')).decode('utf-8'), "host": host, "port": port,
-               "protocol": protocol}, auth_file)
+               "protocol": protocol, "host_uri": host_uri}, auth_file)
     auth_file.write('\n')
 
 
