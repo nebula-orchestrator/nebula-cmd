@@ -35,7 +35,6 @@
 - Bump future from 0.18.1 to 0.18.2 [\#34](https://github.com/nebula-orchestrator/nebula-cmd/pull/34) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump future from 0.18.0 to 0.18.1 [\#33](https://github.com/nebula-orchestrator/nebula-cmd/pull/33) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump future from 0.17.1 to 0.18.0 [\#32](https://github.com/nebula-orchestrator/nebula-cmd/pull/32) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump urllib3 from 1.25.5 to 1.25.6 [\#31](https://github.com/nebula-orchestrator/nebula-cmd/pull/31) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.25.3 to 1.25.5 [\#30](https://github.com/nebula-orchestrator/nebula-cmd/pull/30) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [2.7.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.7.0) (2019-08-28)
@@ -56,13 +55,10 @@
 
 **Implemented enhancements:**
 
+- Bump urllib3 from 1.25.5 to 1.25.6 [\#31](https://github.com/nebula-orchestrator/nebula-cmd/pull/31) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump nebulapythonsdk from 2.5.1 to 2.5.2 [\#23](https://github.com/nebula-orchestrator/nebula-cmd/pull/23) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump requests from 2.21.0 to 2.22.0 [\#22](https://github.com/nebula-orchestrator/nebula-cmd/pull/22) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.24.2 to 1.25.2 [\#21](https://github.com/nebula-orchestrator/nebula-cmd/pull/21) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-
-**Merged pull requests:**
-
-- Feature: add upload script/updating yml [\#18](https://github.com/nebula-orchestrator/nebula-cmd/pull/18) ([jakobpederson](https://github.com/jakobpederson))
 
 ## [2.5.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.5.0) (2019-04-21)
 
@@ -79,6 +75,10 @@
 **Implemented enhancements:**
 
 - Autobuild CLI binary [\#5](https://github.com/nebula-orchestrator/nebula-cmd/issues/5)
+
+**Merged pull requests:**
+
+- Feature: add upload script/updating yml [\#18](https://github.com/nebula-orchestrator/nebula-cmd/pull/18) ([jakobpederson](https://github.com/jakobpederson))
 
 ## [2.2.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.2.0) (2019-02-28)
 
