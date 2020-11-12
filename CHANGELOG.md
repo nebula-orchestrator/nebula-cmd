@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Bump requests from 2.24.0 to 2.25.0 [\#66](https://github.com/nebula-orchestrator/nebula-cmd/pull/66) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump nebulapythonsdk from 2.7.0 to 2.8.0 [\#58](https://github.com/nebula-orchestrator/nebula-cmd/pull/58) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump requests from 2.23.0 to 2.24.0 [\#52](https://github.com/nebula-orchestrator/nebula-cmd/pull/52) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.25.8 to 1.25.9 [\#48](https://github.com/nebula-orchestrator/nebula-cmd/pull/48) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -36,6 +37,7 @@
 - Bump future from 0.18.0 to 0.18.1 [\#33](https://github.com/nebula-orchestrator/nebula-cmd/pull/33) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump future from 0.17.1 to 0.18.0 [\#32](https://github.com/nebula-orchestrator/nebula-cmd/pull/32) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.25.5 to 1.25.6 [\#31](https://github.com/nebula-orchestrator/nebula-cmd/pull/31) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump urllib3 from 1.25.3 to 1.25.5 [\#30](https://github.com/nebula-orchestrator/nebula-cmd/pull/30) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [2.7.0](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.7.0) (2019-08-28)
 
@@ -47,7 +49,6 @@
 
 **Implemented enhancements:**
 
-- Bump urllib3 from 1.25.3 to 1.25.5 [\#30](https://github.com/nebula-orchestrator/nebula-cmd/pull/30) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump urllib3 from 1.25.2 to 1.25.3 [\#24](https://github.com/nebula-orchestrator/nebula-cmd/pull/24) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [2.6.1](https://github.com/nebula-orchestrator/nebula-cmd/tree/2.6.1) (2019-05-21)
