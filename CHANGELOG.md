@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Bump idna from 3.0 to 3.1 [\#74](https://github.com/nebula-orchestrator/nebula-cmd/pull/74) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump idna from 2.10 to 3.0 [\#73](https://github.com/nebula-orchestrator/nebula-cmd/pull/73) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump pyinstaller from 4.0 to 4.1 [\#69](https://github.com/nebula-orchestrator/nebula-cmd/pull/69) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump urllib3 from 1.26.0 to 1.26.1 [\#67](https://github.com/nebula-orchestrator/nebula-cmd/pull/67) ([dependabot[bot]](https://github.com/apps/dependabot))
