@@ -7,7 +7,7 @@ future==0.18.2
 idna==3.2
 macholib==1.15.1
 NebulaPythonSDK==2.8.0
-pefile==2021.5.24
+pefile==2021.9.3
 PyInstaller==4.5.1
 requests==2.26.0
 six==1.16.0
