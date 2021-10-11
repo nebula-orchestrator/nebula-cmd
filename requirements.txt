@@ -1,5 +1,5 @@
 altgraph==0.17.2
-certifi==2021.5.30
+certifi==2021.10.8
 chardet==4.0.0
 Click==8.0.1
 dis3==0.1.3
