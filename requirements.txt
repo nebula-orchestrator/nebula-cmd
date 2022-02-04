@@ -8,7 +8,7 @@ idna==3.3
 macholib==1.15.2
 NebulaPythonSDK==2.8.0
 pefile==2021.9.3
-PyInstaller==4.8
+PyInstaller==4.9
 requests==2.27.1
 six==1.16.0
 urllib3==1.26.8
