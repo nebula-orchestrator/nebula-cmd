@@ -11,4 +11,4 @@ pefile==2022.5.30
 PyInstaller==5.1
 requests==2.28.1
 six==1.16.0
-urllib3==1.26.9
+urllib3==1.26.10
