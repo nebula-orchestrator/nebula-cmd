@@ -9,6 +9,6 @@ macholib==1.16.3
 NebulaPythonSDK==2.8.0
 pefile==2023.2.7
 PyInstaller==6.6.0
-requests==2.31.0
+requests==2.32.1
 six==1.16.0
 urllib3==2.2.1
